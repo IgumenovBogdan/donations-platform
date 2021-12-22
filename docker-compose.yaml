@@ -1,0 +1,54 @@
+version: '3'
+services:
+    nginx:
+        build:
+            context: ./
+            dockerfile: api/docker/development/nginx/Dockerfile
+        volumes:
+            - ./api:/var/www
+        ports:
+            - "85:80"
+        depends_on:
+            - php-fpm
+
+    php-fpm:
+        build:
+            context: ./
+            dockerfile: api/docker/development/php-fpm/Dockerfile
+        volumes:
+            - ./api:/var/www
+
+    php-cli:
+        build:
+            context: ./
+            dockerfile: api/docker/development/php-cli/Dockerfile
+        volumes:
+            - ./api:/var/www
+            - composer:/root/.composer/cache
+
+    frontend-nginx:
+        build:
+            context: ./
+            dockerfile: frontend/docker/development/nginx/Dockerfile
+        volumes:
+            - ./frontend:/var/www
+        ports:
+            - "82:80"
+
+    node-watch:
+        image: node:15.6
+        volumes:
+            - ./frontend:/var/www
+        working_dir: /var/www/frontend
+        command: sh -c "npm run watch"
+
+    nodejs:
+        image: node:15.6
+        volumes:
+            - ./frontend:/var/www
+        working_dir: /var/www/frontend
+        tty: true
+
+volumes:
+    composer:
+

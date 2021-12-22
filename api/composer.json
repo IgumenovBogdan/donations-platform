@@ -1,0 +1,14 @@
+{
+    "name": "shjulia/demo-blog",
+    "type": "project",
+    "license": "MIT",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+
+    }
+}
