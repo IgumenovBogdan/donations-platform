@@ -1,29 +1,21 @@
 <?php
 
+use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use App\Http\Action;
 
+chdir(dirname(__DIR__));
 require __DIR__ . '/../vendor/autoload.php';
 
-//===========================
-$config = [
-    Action\HomeAction::class => function () {
-        return new Action\HomeAction();
-    },
-    Action\TestAction::class => function () {
-        return new Action\TestAction();
-    },
-];
-//===========================
+$config = require 'config/config.php';
 
-$app = AppFactory::create();
+$builder = new ContainerBuilder();
+$builder->addDefinitions($config);
+$container = $builder->build();
 
-$app->get('/',
-    $config[Action\HomeAction::class]()
-);
+$app = AppFactory::createFromContainer($container);
 
-$app->get('/test',
-    $config[Action\TestAction::class]()
-);
+$app->get('/', Action\HomeAction::class);
+$app->get('/test', Action\TestAction::class);
 
 $app->run();
