@@ -2,8 +2,6 @@
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 
 chdir(dirname(__DIR__));
@@ -17,12 +15,7 @@ $container = $builder->build();
 
 $app = AppFactory::createFromContainer($container);
 
-$app->add(function(Request $request, RequestHandler $handler) {
-    $response = $handler->handle($request);
-    echo PHP_EOL . ('This is middleware!') . PHP_EOL;
-    return $response;
-});
-
+(require 'config/middlewares.php')($app);
 (require 'config/routes.php')($app);
 
 $app->run();
