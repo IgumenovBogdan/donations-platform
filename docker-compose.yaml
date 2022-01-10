@@ -51,4 +51,5 @@ services:
 
 volumes:
     composer:
+    postgres:
 

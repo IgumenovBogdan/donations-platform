@@ -9,3 +9,6 @@ docker-build:
 
 composer-install:
 	docker-compose run --rm php-cli composer install
+
+composer-update:
+	docker-compose run --rm php-cli composer update
