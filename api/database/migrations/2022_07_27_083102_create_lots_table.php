@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('lots', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->integer('price');
+            $table->integer('total_collected');
+            $table->unsignedBigInteger('organization_id');
             $table->timestamps();
         });
     }
