@@ -25,10 +25,10 @@ class RegisterContributorRequest extends FormRequest
     {
         return [
             'email' => 'required|email:rfc,dns|unique:users,email',
-            'password' => 'required|string',
+            'password' => 'required|min:8',
             'first_name' => 'required|string',
             'middle_name' => 'required|string',
-            'last_name' => 'required|numeric|digits:10',
+            'last_name' => 'required|string',
         ];
     }
 }

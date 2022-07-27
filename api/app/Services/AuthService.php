@@ -22,14 +22,10 @@ class AuthService
             ]
         );
 
-        $organization = Organization::create(
-            [
-                'user_id' => $user->id,
-                'name' => $request->name,
-                'description' => $request->description,
-                'phone' => $request->phone
-            ]
-        );
+        $organization = Organization::create(array_merge(
+            $request->only('name', 'description', 'phone'),
+            ['user_id' => $user->id,]
+        ));
 
         $token = $user->createToken('organizationToken')->plainTextToken;
 
@@ -50,14 +46,10 @@ class AuthService
             ]
         );
 
-        $contributor = Contributor::create(
-            [
-                'user_id' => $user->id,
-                'first_name' => $request->first_name,
-                'middle_name' => $request->middle_name,
-                'last_name' => $request->last_name
-            ]
-        );
+        $contributor = Contributor::create(array_merge(
+            $request->only('first_name', 'middle_name', 'last_name'),
+            ['user_id' => $user->id,]
+        ));
 
         $token = $user->createToken('contributorToken')->plainTextToken;
 
