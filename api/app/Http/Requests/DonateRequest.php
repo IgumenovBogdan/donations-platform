@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateLotRequest extends FormRequest
+class DonateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class CreateLotRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'description' => 'required',
-            'price' => 'required|numeric|min:0|not_in:0'
+            'amount' => 'required|numeric'
         ];
     }
 }

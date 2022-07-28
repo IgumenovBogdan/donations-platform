@@ -1,33 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterContributorRequest;
-use App\Http\Requests\RegisterOrganizationRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function registerOrganization(RegisterOrganizationRequest $request, AuthService $authService)
+    public function __construct(private readonly AuthService $authService)
+    {}
+
+    public function login(LoginRequest $request): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
-        return response($authService->registerOrganization($request));
+        return response($this->authService->login($request));
     }
 
-    public function registerContributor(RegisterContributorRequest $request, AuthService $authService)
+    public function logout(Request $request): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
-        return response($authService->registerContributor($request));
-    }
-
-    public function login(LoginRequest $request, AuthService $authService)
-    {
-        return response($authService->login($request));
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->tokens()->delete();
-        return response(['message' => 'Logged out']);
+        return response($this->authService->logout($request));
     }
 }

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false);
             $table->unsignedBigInteger('organization_id');
             $table->timestamps();
+
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
         });
     }
 

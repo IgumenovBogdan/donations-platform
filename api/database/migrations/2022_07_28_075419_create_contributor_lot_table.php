@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('contributor_id');
             $table->unsignedBigInteger('lot_id');
-            $table->integer('total_sent');
+            $table->integer('total_sent')->nullable();
             $table->timestamps();
         });
     }
