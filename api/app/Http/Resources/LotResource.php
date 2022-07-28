@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContributorResource extends JsonResource
+class LotResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,11 @@ class ContributorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'first_name' => $this->first_name,
-            'middle_name' => $this->middle_name,
-            'last_name' => $this->last_name
+            'organization_id' => $this->organization_id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'price' => $this->price,
+            'total_collected' => $this->total_collected
         ];
     }
 }
