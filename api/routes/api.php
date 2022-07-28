@@ -25,12 +25,12 @@ Route::post('/register-organization', [AuthController::class, 'registerOrganizat
 Route::post('/register-contributor', [AuthController::class, 'registerContributor']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::apiResource('/lots', LotController::class)->only('index', 'show');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::post('logout', [AuthController::class, 'logout']);
 
-   Route::group(['middleware' => CheckOrganization::class], function () {
-       Route::apiResource('/lots', LotController::class);
-   });
+   Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
 
 });

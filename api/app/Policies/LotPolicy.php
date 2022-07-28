@@ -37,11 +37,11 @@ class LotPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasOne|object
      */
     public function create(User $user)
     {
-        //
+        return $user->organization()->first();
     }
 
     /**
@@ -53,7 +53,7 @@ class LotPolicy
      */
     public function update(User $user, Lot $lot)
     {
-        return $user->organization()->first()->id === $lot->organization_id;
+        return $user->organization()->first()->id ?? null === $lot->organization_id;
     }
 
     /**
@@ -65,7 +65,7 @@ class LotPolicy
      */
     public function delete(User $user, Lot $lot)
     {
-        return $user->organization()->first()->id === $lot->organization_id;
+        return $user->organization()->first()->id ?? null === $lot->organization_id;
     }
 
     /**

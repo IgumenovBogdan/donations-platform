@@ -28,6 +28,7 @@ class LotController extends Controller
      */
     public function store(CreateLotRequest $request): LotResource
     {
+        $this->authorize('create', Lot::class);
         $lot = Lot::create(array_merge(
             $request->only('name', 'description', 'price'),
             [

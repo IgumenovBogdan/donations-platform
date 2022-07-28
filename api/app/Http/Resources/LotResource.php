@@ -20,7 +20,8 @@ class LotResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
-            'total_collected' => $this->total_collected
+            'total_collected' => $this->total_collected,
+            'is_completed' => $this->is_completed
         ];
     }
 }

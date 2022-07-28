@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lots', function (Blueprint $table) {
+        Schema::create('contributor_lot', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->integer('price');
-            $table->integer('total_collected');
-            $table->boolean('is_completed')->default(false);
-            $table->unsignedBigInteger('organization_id');
+            $table->unsignedBigInteger('contributor_id');
+            $table->unsignedBigInteger('lot_id');
+            $table->integer('total_sent');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lots');
+        Schema::dropIfExists('contributor_lot');
     }
 };

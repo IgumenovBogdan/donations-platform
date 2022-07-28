@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Lot extends Model
 {
@@ -15,7 +16,8 @@ class Lot extends Model
         'description',
         'price',
         'total_collected',
-        'organization_id'
+        'organization_id',
+        'is_completed'
     ];
 
     public function organization(): BelongsTo
@@ -23,4 +25,8 @@ class Lot extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    public function contributors(): BelongsToMany
+    {
+        return $this->belongsToMany(Contributor::class);
+    }
 }
