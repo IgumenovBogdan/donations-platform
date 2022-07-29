@@ -13,13 +13,18 @@ class PaymentService
     {
         $lot = Lot::findOrFail($id);
         $contributor = Contributor::find(auth()->user()->contributor->id);
+        $selectedLot = $contributor->lots()->where('lot_id', $id)->first();
 
         $lot->total_collected += $request->amount;
         $lot->save();
 
-        if($contributor->lots()->get()->where('id', $id)->count() == 0) {
-            $lot->contributors()->attach(auth()->user()->contributor->id);
+        if($selectedLot->count() == 0) {
+            $lot->contributors()->attach($contributor->id);
         }
+
+        $contributor->lots()->updateExistingPivot($id, [
+            'total_sent' => $selectedLot->pivot->total_sent + $request->amount
+        ]);
 
         return ['message' => 'Payment success!'];
     }
