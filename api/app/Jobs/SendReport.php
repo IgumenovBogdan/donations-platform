@@ -39,7 +39,8 @@ class SendReport implements ShouldQueue
             $report[] = [
                 'lot' => $lot->name,
                 'organization' => $lot->organization->name,
-                'total_sent' => $lot->pivot->total_sent
+                'total_sent' => $lot->pivot->total_sent,
+                'status' => $lot->is_completed ? 'Completed' : 'Not completed'
             ];
         }
 
