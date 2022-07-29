@@ -20,10 +20,8 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('total_collected');
             $table->boolean('is_completed')->default(false);
-            $table->unsignedBigInteger('organization_id');
+            $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
         });
     }
 

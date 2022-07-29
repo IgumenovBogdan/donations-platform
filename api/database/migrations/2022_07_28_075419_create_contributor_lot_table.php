@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('contributor_lot', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contributor_id');
-            $table->unsignedBigInteger('lot_id');
+            $table->foreignId('contributor_id')->constrained()->onDelete('cascade');
+            $table->foreignId('lot_id')->constrained()->onDelete('cascade');
             $table->integer('total_sent')->nullable();
             $table->timestamps();
         });
