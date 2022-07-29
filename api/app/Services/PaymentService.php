@@ -12,7 +12,7 @@ class PaymentService
     public function donate($request, $id): array
     {
         $lot = Lot::findOrFail($id);
-        $contributor = Contributor::find(auth()->user()->contributor->id);
+        $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
 
         $lot->total_collected += $request->amount;
         $lot->save();

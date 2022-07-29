@@ -4,7 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Lot;
+use App\Models\Organization;
 use App\Policies\LotPolicy;
+use App\Policies\OrganizationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        Lot::class => LotPolicy::class
+        Lot::class => LotPolicy::class,
+        Organization::class => OrganizationPolicy::class
     ];
 
     /**

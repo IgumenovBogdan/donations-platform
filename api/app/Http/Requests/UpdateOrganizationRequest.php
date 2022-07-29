@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLotRequest extends FormRequest
+class UpdateOrganizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class UpdateLotRequest extends FormRequest
         return [
             'name' => 'string|max:255',
             'description' => 'string|min:10',
-            'price' => 'numeric'
+            'phone' => 'numeric|digits:10'
         ];
     }
 }

@@ -25,7 +25,7 @@ class CreateLotRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'description' => 'required',
+            'description' => 'required|string|min:10',
             'price' => 'required|numeric|min:0|not_in:0'
         ];
     }

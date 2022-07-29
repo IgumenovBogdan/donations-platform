@@ -21,7 +21,8 @@ class OrganizationResource extends JsonResource
             'user_id' => $this->user_id,
             'name' => $this->name,
             'description' => $this->description,
-            'phone' => $this->phone
+            'phone' => $this->phone,
+            'lots' => LotResource::collection($this->lots)
         ];
     }
 }
