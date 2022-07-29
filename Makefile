@@ -1,5 +1,6 @@
 docker-up:
 	docker-compose up -d
+	docker-compose exec php-fpm php artisan queue:work
 
 docker-down:
 	docker-compose down --remove-orphans

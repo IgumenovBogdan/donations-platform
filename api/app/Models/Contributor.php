@@ -27,6 +27,6 @@ class Contributor extends Model
 
     public function lots(): BelongsToMany
     {
-        return $this->belongsToMany(Lot::class)->withPivot('total_sent')->withTimestamps();
+        return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'updated_at')->withTimestamps();
     }
 }
