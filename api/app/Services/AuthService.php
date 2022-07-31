@@ -43,4 +43,23 @@ class AuthService
         $request->user()->tokens()->delete();
         return ['message' => 'Logged out'];
     }
+
+    public function getUserByToken(): array
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        if($user->organization()->first()) {
+            return [
+                'user' => new UserResource($user),
+                'role_data' => new OrganizationResource($user->organization()->first())
+            ];
+        }
+
+        if($user->contributor()->first()) {
+            return [
+                'user' => new UserResource($user),
+                'role_data' => new ContributorResource($user->contributor()->first())
+            ];
+        }
+    }
 }

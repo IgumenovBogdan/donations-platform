@@ -19,10 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/register-organization', [RegisterController::class, 'registerOrganization']);
 Route::post('/register-contributor', [RegisterController::class, 'registerContributor']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -34,6 +30,7 @@ Route::apiResource('/lots', LotController::class)->only('index', 'show');
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::post('/logout', [AuthController::class, 'logout']);
+   Route::get('/user', [AuthController::class, 'getUserByToken']);
 
    Route::post('/donate/{lot}', [PaymentController::class, 'donate']);
 

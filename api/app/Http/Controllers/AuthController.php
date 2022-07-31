@@ -22,4 +22,9 @@ class AuthController extends Controller
     {
         return response($this->authService->logout($request));
     }
+
+    public function getUserByToken(): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+        return response($this->authService->getUserByToken());
+    }
 }

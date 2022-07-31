@@ -34,14 +34,19 @@ class SendReport implements ShouldQueue
     {
 
         $report = [];
-
-        foreach ($this->contributor->lots()->orderBy('contributor_lot.updated_at', 'asc')->get() as $lot) {
-            $report[] = [
-                'lot' => $lot->name,
-                'organization' => $lot->organization->name,
-                'total_sent' => $lot->pivot->total_sent,
-                'status' => $lot->is_completed ? 'Completed' : 'Not completed'
-            ];
+        $lastId = 0;
+        foreach ($this->contributor->lots()->get() as $lot) {
+            if ($lot->id == $lastId) {
+                $report[$lot->id]['total_sent'] += $lot->pivot->total_sent;
+            } else {
+                $report[$lot->id] = [
+                    'lot' => $lot->name,
+                    'organization' => $lot->organization->name,
+                    'total_sent' => $lot->pivot->total_sent,
+                    'status' => $lot->is_completed ? 'Completed' : 'Not completed'
+                ];
+            }
+            $lastId = $lot->id;
         }
 
         Mail::to($this->contributor->user->email)->send(new ContributorDonationsReport($report));
