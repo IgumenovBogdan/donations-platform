@@ -22,14 +22,16 @@ class LotPolicy
 
     public function update(User $user, Lot $lot): Response
     {
-        return $user->organization()->first()->id ?? null === $lot->organization_id
+        $condition = $user->organization->id ?? null;
+        return $condition === $lot->organization_id
             ? Response::allow()
             : Response::deny('You do not own this lot.');
     }
 
     public function delete(User $user, Lot $lot): Response
     {
-        return $user->organization()->first()->id ?? null === $lot->organization_id
+        $condition = $user->organization->id ?? null;
+        return $condition === $lot->organization_id
             ? Response::allow()
             : Response::deny('You do not own this lot.');
     }

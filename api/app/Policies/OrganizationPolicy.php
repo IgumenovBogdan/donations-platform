@@ -13,9 +13,10 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Organization $organization)
+    public function update(User $user, Organization $organization): Response
     {
-        return $user->id ?? null === $organization->user_id
+        $condition = $user->id ?? null;
+        return $condition === $organization->user_id
                 ? Response::allow()
                 : Response::deny('You do not own this organization.');
     }
