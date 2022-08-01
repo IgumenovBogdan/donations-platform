@@ -35,7 +35,7 @@ class SendReport implements ShouldQueue
 
         $report = [];
         $lastId = 0;
-        foreach ($this->contributor->lots()->get() as $lot) {
+        foreach ($this->contributor->lots as $lot) {
             if ($lot->id == $lastId) {
                 $report[$lot->id]['total_sent'] += $lot->pivot->total_sent;
             } else {

@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::get('/user', [AuthController::class, 'getUserByToken']);
 
    Route::post('/donate/{lot}', [PaymentController::class, 'donate']);
+
+   Route::get('/history', [ContributorController::class, 'getDonationHistory']);
 
    Route::apiResource('/organizations', OrganizationController::class)->only('update');
 

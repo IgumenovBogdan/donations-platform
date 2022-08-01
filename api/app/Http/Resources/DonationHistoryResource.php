@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Resources;
 
+use App\Models\Organization;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LotResource extends JsonResource
+class DonationHistoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +17,11 @@ class LotResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->pivot->id,
             'organization' => $this->organization->name,
             'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-            'total_collected' => $this->total_collected,
-            'status' => $this->is_completed ? 'Completed' : 'Not completed'
+            'total_sent' => $this->pivot->sent,
+            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->format('Y.m.d H:i:s')
         ];
     }
 }
