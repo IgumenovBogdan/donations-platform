@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::get('/user', [AuthController::class, 'getUserByToken']);
 
    Route::post('/donate/{lot}', [PaymentController::class, 'donate']);
+   Route::post('/donate', [PaymentController::class, 'stripeTest']);
 
    Route::get('/history', [ContributorController::class, 'getDonationHistory']);
 

@@ -14,7 +14,9 @@ use Illuminate\Http\JsonResponse;
 class LotController extends Controller
 {
     public function __construct(private readonly LotService $lotService)
-    {}
+    {
+        $this->authorizeResource(Lot::class);
+    }
 
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
@@ -23,7 +25,6 @@ class LotController extends Controller
 
     public function store(CreateLotRequest $request): LotResource
     {
-        $this->authorize('create', Lot::class);
         return $this->lotService->store($request);
     }
 
@@ -34,13 +35,11 @@ class LotController extends Controller
 
     public function update(UpdateLotRequest $request, Lot $lot): LotResource
     {
-        $this->authorize('update', $lot);
         return $this->lotService->update($lot, $request);
     }
 
     public function destroy(Lot  $lot): JsonResponse
     {
-        $this->authorize('delete', $lot);
         return $this->lotService->destroy($lot);
     }
 }

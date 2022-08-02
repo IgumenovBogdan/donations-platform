@@ -12,7 +12,9 @@ use App\Services\OrganizationService;
 class OrganizationController extends Controller
 {
     public function __construct(protected readonly OrganizationService $organizationService)
-    {}
+    {
+        $this->authorizeResource(Organization::class);
+    }
 
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
@@ -26,7 +28,6 @@ class OrganizationController extends Controller
 
     public function update(UpdateOrganizationRequest $request, Organization $organization): OrganizationResource
     {
-        $this->authorize('update', $organization);
         return $this->organizationService->update($request, $organization);
     }
 }

@@ -16,4 +16,9 @@ class PaymentController extends Controller
     {
         return $this->paymentService->donate($request, $id);
     }
+
+    public function stripeTest()
+    {
+        return $this->paymentService->stripeTest();
+    }
 }
