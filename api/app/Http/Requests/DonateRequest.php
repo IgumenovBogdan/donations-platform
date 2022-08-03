@@ -33,6 +33,11 @@ class DonateRequest extends FormRequest
     {
         return [
             'price' => 'required|numeric',
+            'email' => 'required|email:rfc,dns',
+            'number' => 'required|string',
+            'expMonth' => 'required|string',
+            'expYear' => 'required|numeric',
+            'cvc' => 'required|numeric',
         ];
     }
 }

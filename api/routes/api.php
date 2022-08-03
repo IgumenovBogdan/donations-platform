@@ -32,14 +32,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::post('/logout', [AuthController::class, 'logout']);
    Route::get('/user', [AuthController::class, 'getUserByToken']);
 
-   Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
-       Route::post('/donate/{lot}', 'donate');
-   });
-
    Route::get('/history', [ContributorController::class, 'getDonationHistory']);
 
    Route::apiResource('/organizations', OrganizationController::class)->only('update');
 
    Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
+
+    Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
+        Route::post('/donate/{lot}', 'donate');
+    });
 
 });
