@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,8 +32,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::post('/logout', [AuthController::class, 'logout']);
    Route::get('/user', [AuthController::class, 'getUserByToken']);
 
-   Route::post('/donate/{lot}', [PaymentController::class, 'donate']);
-   Route::post('/donate', [PaymentController::class, 'stripeTest']);
+   Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
+       Route::post('/donate/{lot}', 'donate');
+   });
 
    Route::get('/history', [ContributorController::class, 'getDonationHistory']);
 

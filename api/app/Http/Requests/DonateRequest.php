@@ -6,6 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DonateRequest extends FormRequest
 {
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'expYear' => intval($this->expYear),
+            'price' => floatval($this->price)
+        ]);
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +32,7 @@ class DonateRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|numeric'
+            'price' => 'required|numeric',
         ];
     }
 }

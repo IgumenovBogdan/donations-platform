@@ -6,8 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DonateRequest;
 use App\Services\PaymentService;
+use Illuminate\Http\Request;
 
-class PaymentController extends Controller
+class StripePaymentController extends Controller
 {
     public function __construct(private readonly PaymentService $paymentService)
     {}
@@ -15,10 +16,5 @@ class PaymentController extends Controller
     public function donate(DonateRequest $request, $id): array
     {
         return $this->paymentService->donate($request, $id);
-    }
-
-    public function stripeTest()
-    {
-        return $this->paymentService->stripeTest();
     }
 }

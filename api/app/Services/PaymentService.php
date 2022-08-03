@@ -6,46 +6,32 @@ namespace App\Services;
 
 use App\Models\Contributor;
 use App\Models\Lot;
-use Stripe\StripeClient;
 
 class PaymentService
 {
-    public function stripeTest()
-    {
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
-
-
-        $account = 'acct_1LSGpj2HvraPijZr';
-
-//        $response = $stripe->accounts->create([
-//            'type' => 'custom',
-//            'capabilities' => [
-//                'card_payments' => ['requested' => true],
-//                'transfers' => ['requested' => true],
-//            ],
-//            'business_type' => 'company',
-//
-//        ]);
-//
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-        $transfer = \Stripe\Transfer::create([
-            "amount" => 1000,
-            "currency" => "brl",
-            "destination" => $account,
-        ]);
-        dd($transfer);
-    }
+    public function __construct(private readonly StripeService $stripeService)
+    {}
 
     public function donate($request, $id): array
     {
         $lot = Lot::findOrFail($id);
         $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
 
-        $lot->total_collected += $request->amount;
+        if($contributor->customer_id === null) {
+            $customer = $this->stripeService->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
+            $contributor->customer_id = $customer;
+            $contributor->save();
+        } else {
+            $customer = $contributor->customer_id;
+        }
+
+        $this->stripeService->createCharge(customerId: $customer, price: $request->price);
+
+        $lot->total_collected += $request->price;
         $lot->save();
 
         $lot->contributors()->attach($contributor->id, [
-            'total_sent' => $request->amount
+            'total_sent' => $request->price
         ]);
 
         return ['message' => 'Payment success!'];
