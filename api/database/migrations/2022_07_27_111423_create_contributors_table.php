@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('customer_id')->nullable();
+            $table->string('merchant_id')->nullable();
             $table->string('middle_name');
             $table->string('last_name');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

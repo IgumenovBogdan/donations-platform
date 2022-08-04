@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PaypalPaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -38,8 +39,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
 
-    Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
-        Route::post('/donate/{lot}', 'donate');
+   Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
+       Route::post('/donate/{lot}', 'donate');
+   });
+
+    Route::prefix('paypal')->controller(PaypalPaymentController::class)->group(function () {
+        Route::post('/register', 'registerMerchant');
+        Route::post('/set/{id}', 'setMerchantId');
     });
 
 });

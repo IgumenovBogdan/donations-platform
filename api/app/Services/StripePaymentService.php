@@ -7,7 +7,7 @@ namespace App\Services;
 use App\Models\Contributor;
 use App\Models\Lot;
 
-class PaymentService
+class StripePaymentService
 {
     public function __construct(private readonly StripeService $stripeService)
     {}
