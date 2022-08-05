@@ -12,6 +12,11 @@ class PaypalPaymentController extends Controller
     public function __construct(private readonly PaypalPaymentService $paymentService)
     {}
 
+    public function donate(Request $request)
+    {
+        return $this->paymentService->donate($request);
+    }
+
     public function registerMerchant(): \Illuminate\Http\RedirectResponse
     {
         return $this->paymentService->registerMerchant();

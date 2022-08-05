@@ -18,9 +18,38 @@ class PaypalService
         $this->token = $this->getToken();
     }
 
-    public function getRegisterCustomerLinks(string $uri): array
+    public function createPayment(
+        string $payerId,
+        float $price,
+        ?string $currency = null
+    )
     {
-        $response = $this->client->request('POST', $uri, [
+        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/checkout/orders', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Accept-Language' => 'en_US',
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer " . $this->token
+            ],
+            'json' => [
+                'intent' => 'CAPTURE',
+                'purchase_units' => [
+                    [
+                        'amount' => [
+                            'value' => $price,
+                            'currency_code' => $currency ?: 'USD'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        return json_decode((string) $response->getBody());
+    }
+
+    public function getRegisterCustomerLinks(): array
+    {
+        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Accept-Language' => 'en_US',

@@ -11,9 +11,15 @@ class PaypalPaymentService
     public function __construct(private readonly PaypalService $paypalService)
     {}
 
+    public function donate($request)
+    {
+        $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
+        return $this->paypalService->createPayment($contributor->merchant_id, floatval($request->price));
+    }
+
     public function registerMerchant(): \Illuminate\Http\RedirectResponse
     {
-        $links = $this->paypalService->getRegisterCustomerLinks('https://api-m.sandbox.paypal.com/v2/customer/partner-referrals');
+        $links = $this->paypalService->getRegisterCustomerLinks();
         return \Redirect::to($links[1]['href']);
     }
 
