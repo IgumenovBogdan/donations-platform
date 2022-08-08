@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\ContributorResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-    public function login($request): array
+    public function login(LoginRequest $request): array
     {
         $user = User::where('email', $request->email)->first();
 
@@ -38,15 +40,15 @@ class AuthService
         }
     }
 
-    public function logout($request): array
+    public function logout(Request $request): array
     {
         $request->user()->tokens()->delete();
         return ['message' => 'Logged out'];
     }
 
-    public function getUserByToken(): array
+    public function getUserByToken(Request $request): array
     {
-        $user = User::findOrFail(auth()->user()->id);
+        $user = User::findOrFail($request->user()->id);
 
         if($user->organization()->first()) {
             return [

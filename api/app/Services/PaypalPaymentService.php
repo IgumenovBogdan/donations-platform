@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\PaypalDonateRequest;
 use App\Models\Contributor;
 use App\Models\Lot;
+use Illuminate\Http\Request;
 
 class PaypalPaymentService
 {
     public function __construct(private readonly PaypalService $paypalService)
     {}
 
-    public function donate($request): \stdClass
+    public function donate(PaypalDonateRequest $request): \stdClass
     {
         return $this->paypalService->createPayment(floatval($request->price));
     }
 
-    public function capture($id, $lotId): \stdClass
+    public function capture(Request $request, string $id, string $lotId): \stdClass
     {
         $lot = Lot::findOrFail($lotId);
-        $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
+        $contributor = Contributor::findOrFail($request->user()->contributor->id);
 
         $payment = $this->paypalService->capturePayment($id);
         $price = intval($payment->purchase_units[0]->payments->captures[0]->amount->value);
@@ -35,15 +37,15 @@ class PaypalPaymentService
         return $payment;
     }
 
-    public function registerMerchant(): \Illuminate\Http\RedirectResponse
+    public function registerMerchant(): string
     {
         $links = $this->paypalService->getRegisterCustomerLinks();
-        return \Redirect::to($links[1]['href']);
+        return $links[1]['href'];
     }
 
-    public function setMerchantId($id): array
+    public function setMerchantId(Request $request, string $id): array
     {
-        $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
+        $contributor = Contributor::findOrFail($request->user()->contributor->id);
         $contributor->merchant_id = $id;
         $contributor->save();
         return ['message' => 'Id was set'];

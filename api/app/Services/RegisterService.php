@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\RegisterContributorRequest;
+use App\Http\Requests\RegisterOrganizationRequest;
 use App\Http\Resources\ContributorResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\UserResource;
 use App\Models\Contributor;
 use App\Models\Organization;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class RegisterService
 {
-    public function registerOrganization($request): array
+    public function registerOrganization(RegisterOrganizationRequest $request): Collection
     {
         $user = User::create(
             [
@@ -29,15 +32,14 @@ class RegisterService
 
         $token = $user->createToken('organizationToken')->plainTextToken;
 
-        session()->put('token', $token);
-
-        return [
+        return collect([
+            'token' => $token,
             'user' => new UserResource($user),
             'role_data' => new OrganizationResource($organization)
-        ];
+        ]);
     }
 
-    public function registerContributor($request): array
+    public function registerContributor(RegisterContributorRequest $request): Collection
     {
         $user = User::create(
             [
@@ -53,11 +55,10 @@ class RegisterService
 
         $token = $user->createToken('contributorToken')->plainTextToken;
 
-        session()->put('token', $token);
-
-        return [
+        return collect([
+            'token' => $token,
             'user' => new UserResource($user),
             'role_data' => new ContributorResource($contributor)
-        ];
+        ]);
     }
 }
