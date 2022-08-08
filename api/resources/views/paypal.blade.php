@@ -40,7 +40,7 @@
 
         // Call your server to finalize the transaction
         onApprove: function(data, actions) {
-            return fetch('http://localhost:85/api/paypal/' + data.orderID + '/capture/1', {
+            return fetch('http://localhost:85/api/paypal/' + data.orderID + '/capture/2', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',

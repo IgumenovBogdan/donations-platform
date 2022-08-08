@@ -28,6 +28,6 @@ class AuthController extends Controller
 
     public function getUserByToken(Request $request): Response|Application|ResponseFactory
     {
-        return response($this->authService->getUserByToken());
+        return response($this->authService->getUserByToken($request));
     }
 }

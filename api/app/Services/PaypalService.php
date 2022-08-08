@@ -10,12 +10,22 @@ use Illuminate\Support\Str;
 class PaypalService
 {
     private Client $client;
+    private string $secret;
+    private string $clientId;
+    private string $redirectUrl;
     private string $token;
 
-    public function __construct()
-    {
-        $this->client = new Client();
+    public function __construct(
+        Client $client,
+        string $secret,
+        string $clientId,
+        string $redirectUrl
+    ) {
+        $this->client = $client;
+        $this->secret = $secret;
+        $this->clientId = $clientId;
         $this->token = $this->getToken();
+        $this->redirectUrl = $redirectUrl;
     }
 
     public function createPayment(
@@ -71,7 +81,7 @@ class PaypalService
             'json' => [
                 'tracking_id' => Str::random(15),
                 'partner_config_override' => [
-                    'return_url' => 'http://localhost:85/'
+                    'return_url' => $this->redirectUrl,
                 ],
                 'operations' => [
                     [
@@ -127,8 +137,8 @@ class PaypalService
                 'Accept-Language' => 'en_US'
             ],
             'auth' => [
-                env('PAYPAL_CLIENT_ID'),
-                env('PAYPAL_SECRET')
+                $this->clientId,
+                $this->secret
             ],
             'form_params' => [
                 'grant_type' => 'client_credentials',
