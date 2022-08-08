@@ -24,7 +24,7 @@
 
         // Call your server to set up the transaction
         createOrder: function(data, actions) {
-            return fetch('http://localhost:85/api/paypal/donate/1', {
+            return fetch('http://localhost:85/api/paypal/donate', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,8 +40,12 @@
 
         // Call your server to finalize the transaction
         onApprove: function(data, actions) {
-            return fetch('/demo/checkout/api/paypal/order/' + data.orderID + '/capture/', {
-                method: 'post'
+            return fetch('http://localhost:85/api/paypal/' + data.orderID + '/capture/1', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer 5|rbzjG4sFOBCSFIAwCCt2LqqXuL9cVZBNT4zaa8lM'
+                }
             }).then(function(res) {
                 return res.json();
             }).then(function(orderData) {

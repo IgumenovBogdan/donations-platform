@@ -19,7 +19,6 @@ class PaypalService
     }
 
     public function createPayment(
-        string $payerId,
         float $price,
         ?string $currency = null
     )
@@ -44,6 +43,19 @@ class PaypalService
             ]
         ]);
 
+        return json_decode((string) $response->getBody());
+    }
+
+    public function capturePayment(string $id)
+    {
+        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/checkout/orders/' . $id . '/capture', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Accept-Language' => 'en_US',
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer " . $this->token
+            ]
+        ]);
         return json_decode((string) $response->getBody());
     }
 

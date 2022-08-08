@@ -4,12 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DonateRequest extends FormRequest
+class PaypalDonateRequest extends FormRequest
 {
     protected function prepareForValidation()
     {
         $this->merge([
-            'expYear' => intval($this->expYear),
             'price' => floatval($this->price)
         ]);
     }
@@ -32,12 +31,7 @@ class DonateRequest extends FormRequest
     public function rules()
     {
         return [
-            'price' => 'required|numeric',
-            'email' => 'required|email:rfc,dns',
-            'number' => 'required|string',
-            'expMonth' => 'required|string',
-            'expYear' => 'required|numeric',
-            'cvc' => 'required|numeric',
+            'price' => 'required|numeric'
         ];
     }
 }

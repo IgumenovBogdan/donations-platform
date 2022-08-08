@@ -5,16 +5,34 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Contributor;
+use App\Models\Lot;
 
 class PaypalPaymentService
 {
     public function __construct(private readonly PaypalService $paypalService)
     {}
 
-    public function donate($request)
+    public function donate($request): \stdClass
     {
+        return $this->paypalService->createPayment(floatval($request->price));
+    }
+
+    public function capture($id, $lotId): \stdClass
+    {
+        $lot = Lot::findOrFail($lotId);
         $contributor = Contributor::findOrFail(auth()->user()->contributor->id);
-        return $this->paypalService->createPayment($contributor->merchant_id, floatval($request->price));
+
+        $payment = $this->paypalService->capturePayment($id);
+        $price = intval($payment->purchase_units[0]->payments->captures[0]->amount->value);
+
+        $lot->total_collected += $price;
+        $lot->save();
+
+        $lot->contributors()->attach($contributor->id, [
+           'total_sent' => $price
+        ]);
+
+        return $payment;
     }
 
     public function registerMerchant(): \Illuminate\Http\RedirectResponse

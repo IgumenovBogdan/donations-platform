@@ -44,9 +44,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    });
 
     Route::prefix('paypal')->controller(PaypalPaymentController::class)->group(function () {
-        Route::post('/donate/{lot}', 'donate');
-        Route::post('/register', 'registerMerchant');
-        Route::post('/set/{id}', 'setMerchantId');
+        Route::post('/donate', 'donate');
+        Route::post('/{id}/capture/{lotId}', 'capture');
+//        Route::post('/register', 'registerMerchant');
+//        Route::post('/set/{id}', 'setMerchantId');
     });
 
 });
