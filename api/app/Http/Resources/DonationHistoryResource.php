@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Organization;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +19,7 @@ class DonationHistoryResource extends JsonResource
             'id' => $this->pivot->id,
             'organization' => $this->organization->name,
             'name' => $this->name,
-            'total_sent' => $this->pivot->sent,
+            'total_sent' => $this->pivot->total_sent,
             'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->format('Y.m.d H:i:s')
         ];
     }
