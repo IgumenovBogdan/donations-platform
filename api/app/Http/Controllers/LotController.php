@@ -8,18 +8,22 @@ use App\Http\Requests\CreateLotRequest;
 use App\Http\Requests\UpdateLotRequest;
 use App\Http\Resources\LotResource;
 use App\Models\Lot;
+use App\Repositories\LotsRepository;
 use App\Services\LotService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class LotController extends Controller
 {
-    public function __construct(private readonly LotService $lotService)
+    public function __construct(
+        private readonly LotService $lotService,
+        private readonly LotsRepository $lotsRepository
+    )
     {}
 
     public function index(): AnonymousResourceCollection
     {
-        return LotResource::collection(Lot::paginate(10));
+        return LotResource::collection($this->lotsRepository->getAll());
     }
 
     public function store(CreateLotRequest $request): LotResource
