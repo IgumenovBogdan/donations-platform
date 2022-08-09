@@ -14,18 +14,18 @@ class PaypalPaymentService
     public function __construct(private readonly PaypalService $paypalService)
     {}
 
-    public function donate(PaypalDonateRequest $request): \stdClass
+    public function donate(PaypalDonateRequest $request): array
     {
-        return $this->paypalService->createPayment(floatval($request->price));
+        return $this->paypalService->createPayment($request->price);
     }
 
-    public function capture(Request $request, string $id, string $lotId): \stdClass
+    public function capture(Request $request, string $id, string $lotId): array
     {
         $lot = Lot::findOrFail($lotId);
         $contributor = Contributor::findOrFail($request->user()->contributor->id);
 
         $payment = $this->paypalService->capturePayment($id);
-        $price = intval($payment->purchase_units[0]->payments->captures[0]->amount->value);
+        $price = intval($payment['purchase_units'][0]['payments']['captures'][0]['amount']['value']);
 
         $lot->total_collected += $price;
         $lot->save();

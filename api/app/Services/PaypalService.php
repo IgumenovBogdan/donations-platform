@@ -12,10 +12,10 @@ class PaypalService
     private string $token;
 
     public function __construct(
-        private readonly Client $client,
         private readonly string $secret,
         private readonly string $clientId,
-        private readonly string $redirectUrl
+        private readonly string $redirectUrl,
+        private readonly GuzzleHttpService $guzzleHttpService
     ) {
         $this->token = $this->getToken();
     }
@@ -23,16 +23,15 @@ class PaypalService
     public function createPayment(
         float $price,
         ?string $currency = null
-    )
-    {
-        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/checkout/orders', [
-            'headers' => [
+    ): array {
+        try {
+            $headers = [
                 'Accept' => 'application/json',
                 'Accept-Language' => 'en_US',
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer " . $this->token
-            ],
-            'json' => [
+            ];
+            $data = [
                 'intent' => 'CAPTURE',
                 'purchase_units' => [
                     [
@@ -42,35 +41,45 @@ class PaypalService
                         ]
                     ]
                 ]
-            ]
-        ]);
-
-        return json_decode((string) $response->getBody());
+            ];
+            return $this->guzzleHttpService->request(
+                'POST',
+                'https://api-m.sandbox.paypal.com/v2/checkout/orders',
+                $headers,
+                $data
+            );
+        } catch (\Throwable $e) {
+            throw new \DomainException($e->getMessage());
+        }
     }
 
-    public function capturePayment(string $id)
+    public function capturePayment(string $id): array
     {
-        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/checkout/orders/' . $id . '/capture', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Accept-Language' => 'en_US',
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer " . $this->token
-            ]
-        ]);
-        return json_decode((string) $response->getBody());
+        try {
+            $data = [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => "Bearer " . $this->token
+                ]
+            ];
+            return $this->guzzleHttpService->fetch('POST', 'https://api-m.sandbox.paypal.com/v2/checkout/orders/' . $id . '/capture', $data);
+        } catch (\Throwable $e) {
+            throw new \DomainException($e->getMessage());
+        }
     }
 
     public function getRegisterCustomerLinks(): array
     {
-        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals', [
-            'headers' => [
+        try {
+            $headers = [
                 'Accept' => 'application/json',
                 'Accept-Language' => 'en_US',
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer " . $this->token
-            ],
-            'json' => [
+            ];
+            $data = [
                 'tracking_id' => Str::random(15),
                 'partner_config_override' => [
                     'return_url' => $this->redirectUrl,
@@ -101,42 +110,39 @@ class PaypalService
                         'granted' => true
                     ]
                 ]
-            ],
-        ]);
-
-        return json_decode((string)$response->getBody(), true)['links'];
-    }
-
-    public function getSelfLinkData(string $uri)
-    {
-        $response = $this->client->request('GET', $uri, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Accept-Language' => 'en_US',
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer " . $this->token
-            ],
-        ]);
-
-        return json_decode((string) $response->getBody());
+            ];
+            return $this->guzzleHttpService->request(
+                'POST',
+                'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals',
+                $headers,
+                $data
+            )['links'];
+        } catch (\Throwable $e) {
+            throw new \DomainException($e->getMessage());
+        }
     }
 
     private function getToken(): string
     {
-        $response = $this->client->request('POST', 'https://api-m.sandbox.paypal.com/v1/oauth2/token', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Accept-Language' => 'en_US'
-            ],
-            'auth' => [
-                $this->clientId,
-                $this->secret
-            ],
-            'form_params' => [
-                'grant_type' => 'client_credentials',
-            ],
-        ]);
+        try {
+            $data = [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US'
+                ],
+                'auth' => [
+                    $this->clientId,
+                    $this->secret
+                ],
+                'form_params' => [
+                    'grant_type' => 'client_credentials',
+                ],
+            ];
+            $response = $this->guzzleHttpService->fetch('POST', 'https://api-m.sandbox.paypal.com/v1/oauth2/token', $data);
+        } catch (\Throwable $e) {
+            throw new \DomainException($e->getMessage());
+        }
 
-        return json_decode((string) $response->getBody(), true)['access_token'];
+        return $response['access_token'];
     }
 }

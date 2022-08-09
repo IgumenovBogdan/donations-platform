@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\GuzzleHttpService;
 use App\Services\PaypalService;
 use App\Services\StripeService;
 use GuzzleHttp\Client;
@@ -20,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PaypalService::class, function (Application $app) {
             $config = $app['config']['services']['paypal'];
-            return new PaypalService(new Client(), $config['secret'], $config['client_id'], $config['redirect_url']);
+            return new PaypalService($config['secret'], $config['client_id'], $config['redirect_url'], new GuzzleHttpService(new Client()));
         });
         $this->app->bind(StripeService::class, function (Application $app) {
             $config = $app['config']['services']['stripe'];
