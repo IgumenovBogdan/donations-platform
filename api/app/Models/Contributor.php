@@ -29,25 +29,4 @@ class Contributor extends Model
     {
         return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'updated_at', 'created_at', 'id')->withTimestamps();
     }
-
-    public function getTotalDonationsHistory(): array
-    {
-        $report = [];
-        $lastId = 0;
-        foreach ($this->lots as $lot) {
-            if ($lot->id == $lastId) {
-                $report[$lot->id]['total_sent'] += $lot->pivot->total_sent;
-            } else {
-                $report[$lot->id] = [
-                    'lot' => $lot->name,
-                    'organization' => $lot->organization->name,
-                    'total_sent' => $lot->pivot->total_sent,
-                    'status' => $lot->is_completed ? 'Completed' : 'Not completed'
-                ];
-            }
-            $lastId = $lot->id;
-        }
-
-        return $report;
-    }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Mail\ContributorDonationsReport;
+use App\Repositories\DonationsRepository;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,8 +34,8 @@ class SendReport implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(DonationsRepository $donationsRepository)
     {
-        Mail::to($this->contributor->user->email)->send(new ContributorDonationsReport($this->contributor->getTotalDonationsHistory()));
+        Mail::to($this->contributor->user->email)->send(new ContributorDonationsReport($donationsRepository->getTotalDonationsHistory($this->contributor)));
     }
 }

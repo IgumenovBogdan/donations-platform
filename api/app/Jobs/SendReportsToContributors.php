@@ -34,7 +34,7 @@ class SendReportsToContributors implements ShouldQueue
     public function handle()
     {
         foreach (Contributor::all() as $contributor) {
-            if($contributor->lots()->get()) {
+            if($contributor->lots()->get()->count() !== 0) {
                 dispatch(new SendReport($contributor));
             }
         }
