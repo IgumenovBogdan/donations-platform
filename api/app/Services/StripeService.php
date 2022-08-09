@@ -12,12 +12,12 @@ class StripeService
 {
     public const STRIPE_PRICE_FACTOR = 100;
 
-    private StripeClient $stripe;
-
-    public function __construct()
+    public function __construct(
+        private readonly StripeClient $stripe,
+        private readonly string $secretKey
+    )
     {
-        $this->stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey($this->secretKey);
     }
 
     public function createCustomerByCard(

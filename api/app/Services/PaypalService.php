@@ -9,23 +9,15 @@ use Illuminate\Support\Str;
 
 class PaypalService
 {
-    private Client $client;
-    private string $secret;
-    private string $clientId;
-    private string $redirectUrl;
     private string $token;
 
     public function __construct(
-        Client $client,
-        string $secret,
-        string $clientId,
-        string $redirectUrl
+        private readonly Client $client,
+        private readonly string $secret,
+        private readonly string $clientId,
+        private readonly string $redirectUrl
     ) {
-        $this->client = $client;
-        $this->secret = $secret;
-        $this->clientId = $clientId;
         $this->token = $this->getToken();
-        $this->redirectUrl = $redirectUrl;
     }
 
     public function createPayment(

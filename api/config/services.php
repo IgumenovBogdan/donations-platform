@@ -35,6 +35,10 @@ return [
         'secret' => env('PAYPAL_SECRET'),
         'client_id' => env('PAYPAL_CLIENT_ID'),
         'redirect_url'=> env('PAYPAL_REDIRECT_URL')
+    ],
+
+    'stripe' => [
+        'secret_key' => env('STRIPE_SECRET_KEY')
     ]
 
 ];

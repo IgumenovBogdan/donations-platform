@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Services\PaypalService;
+use App\Services\StripeService;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PaypalService::class, function (Application $app) {
             $config = $app['config']['services']['paypal'];
             return new PaypalService(new Client(), $config['secret'], $config['client_id'], $config['redirect_url']);
+        });
+        $this->app->bind(StripeService::class, function (Application $app) {
+            $config = $app['config']['services']['stripe'];
+            return new StripeService(new StripeClient($config['secret_key']), $config['secret_key']);
         });
     }
 
