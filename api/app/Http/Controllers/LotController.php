@@ -7,7 +7,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateLotRequest;
 use App\Http\Requests\UpdateLotRequest;
 use App\Http\Resources\LotResource;
+use App\Http\Resources\OrganizationDonationHistoryResource;
 use App\Models\Lot;
+use App\Models\Organization;
+use App\Repositories\DonationsRepository;
 use App\Repositories\LotsRepository;
 use App\Services\LotService;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +20,8 @@ class LotController extends Controller
 {
     public function __construct(
         private readonly LotService $lotService,
-        private readonly LotsRepository $lotsRepository
+        private readonly LotsRepository $lotsRepository,
+        private readonly DonationsRepository $donationsRepository
     )
     {}
 
@@ -46,5 +50,11 @@ class LotController extends Controller
     public function destroy(Lot $lot): JsonResponse
     {
         return $this->lotService->destroy($lot);
+    }
+
+    public function getLotDonationHistory(string $id): AnonymousResourceCollection
+    {
+        $this->authorize('view', Lot::findOrFail($id));
+        return OrganizationDonationHistoryResource::collection($this->donationsRepository->getAllLotHistory($id));
     }
 }

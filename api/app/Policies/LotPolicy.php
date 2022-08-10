@@ -13,6 +13,14 @@ class LotPolicy
 {
     use HandlesAuthorization;
 
+    public function view(User $user, Lot $lot): Response
+    {
+        $condition = $user->organization->id ?? null;
+        return $condition === $lot->organization_id
+            ? Response::allow()
+            : Response::deny('You do not own this lot.');
+    }
+
     public function create(User $user): Response
     {
         return $user->organization()->first()

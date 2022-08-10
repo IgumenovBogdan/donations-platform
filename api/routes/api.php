@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/history', 'getDonationHistory');
     });
 
-    Route::prefix('organization')->controller(OrganizationController::class)->group(function () {
+    Route::prefix('organization')->controller(LotController::class)->group(function () {
         Route::get('/history/{lot}', 'getLotDonationHistory');
     });
 
