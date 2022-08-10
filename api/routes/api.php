@@ -7,6 +7,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PaypalPaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('organization')->controller(LotController::class)->group(function () {
         Route::get('/history/{lot}', 'getLotDonationHistory');
+    });
+
+    Route::prefix('subscriptions')->controller(SubscriptionController::class)->group(function () {
+        Route::get('/tariffs', 'getSubscriptionTariffs');
+        Route::post('/subscribe/{id}', 'payForSubscription');
     });
 
    Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {

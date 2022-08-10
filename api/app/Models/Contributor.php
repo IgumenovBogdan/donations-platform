@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Contributor extends Model
 {
@@ -28,6 +29,11 @@ class Contributor extends Model
     public function lots(): BelongsToMany
     {
         return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'created_at', 'id');
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
     }
 
     public function getFullName(): string

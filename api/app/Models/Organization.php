@@ -29,4 +29,9 @@ class Organization extends Model
     {
         return $this->hasMany(Lot::class);
     }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }
