@@ -33,11 +33,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::post('/logout', [AuthController::class, 'logout']);
    Route::get('/user', [AuthController::class, 'getUserByToken']);
 
-   Route::get('/history', [ContributorController::class, 'getDonationHistory']);
-
    Route::apiResource('/organizations', OrganizationController::class)->only('update');
 
    Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
+
+    Route::prefix('contributor')->controller(ContributorController::class)->group(function () {
+        Route::get('/history', 'getDonationHistory');
+    });
+
+    Route::prefix('organization')->controller(OrganizationController::class)->group(function () {
+        Route::get('/history/{lot}', 'getLotDonationHistory');
+    });
 
    Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
        Route::post('/donate/{lot}', 'donate');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('contributor_id')->constrained()->onDelete('cascade');
             $table->foreignId('lot_id')->constrained()->onDelete('cascade');
             $table->integer('total_sent')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

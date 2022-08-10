@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
-class DonationHistoryResource extends JsonResource
+class OrganizationDonationHistoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +19,7 @@ class DonationHistoryResource extends JsonResource
     {
         return [
             'id' => $this->pivot->id,
-            'organization' => $this->organization->name,
-            'name' => $this->name,
+            'contributor' => $this->getFullName(),
             'total_sent' => $this->pivot->total_sent,
             'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->format('Y.m.d H:i:s')
         ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\DonationHistoryResource;
+use App\Http\Resources\ContributorDonationHistoryResource;
 use App\Repositories\DonationsRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +16,6 @@ class ContributorController extends Controller
 
     public function getDonationHistory(): AnonymousResourceCollection
     {
-        return DonationHistoryResource::collection($this->donationsRepository->getAllHistory(Auth::user()));
+        return ContributorDonationHistoryResource::collection($this->donationsRepository->getAllContributorHistory(Auth::user()));
     }
 }
