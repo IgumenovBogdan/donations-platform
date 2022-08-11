@@ -8,6 +8,7 @@ use App\Http\Requests\StripeDonateRequest;
 use App\Models\Contributor;
 use App\Models\Lot;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class StripePaymentService
 {
@@ -25,19 +26,28 @@ class StripePaymentService
             ], 405);
         }
 
-        $customer = $this->stripeService->checkCustomer($request, $contributor);
+        DB::beginTransaction();
 
-        $this->stripeService->createCharge(customerId: $customer, price: $request->price);
+        try {
+            $customer = $this->stripeService->checkCustomer($request, $contributor);
 
-        $lot->total_collected += $request->price;
-        $lot->save();
+            $this->stripeService->createCharge(customerId: $customer, price: $request->price);
 
-        $lot->contributors()->attach($contributor->id, [
-            'total_sent' => $request->price
-        ]);
+            $lot->total_collected += $request->price;
+            $lot->save();
 
-        return response()->json([
-            'message' => 'Payment success!'
-        ], 200);
+            $lot->contributors()->attach($contributor->id, [
+                'total_sent' => $request->price
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Payment success!'
+            ], 200);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw new \DomainException('Donate error');
+        }
     }
 }
