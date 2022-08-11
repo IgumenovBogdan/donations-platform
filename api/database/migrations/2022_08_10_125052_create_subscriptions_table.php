@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contributor_id')->constrained()->onDelete('cascade');
             $table->foreignId('organization_id')->constrained()->onDelete('cascade');
+            $table->string('tariff');
             $table->integer('amount');
         });
     }

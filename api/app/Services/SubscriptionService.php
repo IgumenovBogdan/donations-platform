@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\SubscribeToOrganizationRequest;
 use App\Models\Contributor;
 use App\Models\Organization;
 use App\Models\Subscription;
-use App\Models\SubscriptionHistory;
-use Carbon\Carbon;
+use App\Repositories\SubscriptionsRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SubscriptionService
 {
     public function __construct(
-        private readonly StripeService $stripeService
+        private readonly StripeService $stripeService,
+        private readonly SubscriptionsRepository $subscriptionsRepository
     )
     {}
 
@@ -25,7 +25,7 @@ class SubscriptionService
         return config('enums.tariffs');
     }
 
-    public function payForSubscription(Request $request, string $id): JsonResponse
+    public function payForSubscription(SubscribeToOrganizationRequest $request, string $id): JsonResponse
     {
         $organization = Organization::findOrFail($id);
         $contributor = Contributor::findOrFail($request->user()->contributor->id);
@@ -33,26 +33,13 @@ class SubscriptionService
         DB::beginTransaction();
 
         try {
-            if($contributor->customer_id === null) {
-                $customer = $this->stripeService->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
-                $contributor->customer_id = $customer;
-                $contributor->save();
-            } else {
-                $customer = $contributor->customer_id;
-            }
+            $customer = $this->stripeService->checkCustomer($request, $contributor);
 
-            $this->stripeService->createCharge(customerId: $customer, price: floatval($request->amount));
+            $this->stripeService->createCharge(customerId: $customer, price: $request->amount);
 
-            $subscription = Subscription::create([
-                'contributor_id' => $contributor->id,
-                'organization_id' => $organization->id,
-                'amount' => $request->amount,
-            ]);
+            $subscription = $this->subscriptionsRepository->createSubscription($request, $contributor->id, $organization->id);
 
-            SubscriptionHistory::create([
-                'subscription_id' => $subscription->id,
-                'payed_at' => Carbon::now()->toDateString()
-            ]);
+            $this->subscriptionsRepository->createSubscriptionHistory($subscription->id);
 
             DB::commit();
 

@@ -25,13 +25,7 @@ class StripePaymentService
             ], 405);
         }
 
-        if($contributor->customer_id === null) {
-            $customer = $this->stripeService->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
-            $contributor->customer_id = $customer;
-            $contributor->save();
-        } else {
-            $customer = $contributor->customer_id;
-        }
+        $customer = $this->stripeService->checkCustomer($request, $contributor);
 
         $this->stripeService->createCharge(customerId: $customer, price: $request->price);
 

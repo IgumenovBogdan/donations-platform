@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\StripeDonateRequest;
+use App\Http\Requests\SubscribeToOrganizationRequest;
+use App\Models\Contributor;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -20,7 +23,19 @@ class StripeService
         Stripe::setApiKey($this->secretKey);
     }
 
-    public function createCustomerByCard(
+    public function checkCustomer(SubscribeToOrganizationRequest|StripeDonateRequest $request, Contributor $contributor): string
+    {
+        if($contributor->customer_id === null) {
+            $customer = $this->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
+            $contributor->customer_id = $customer;
+            $contributor->save();
+            return $customer;
+        } else {
+            return $contributor->customer_id;
+        }
+    }
+
+    private function createCustomerByCard(
         string $email,
         string $number,
         string $expMonth,
