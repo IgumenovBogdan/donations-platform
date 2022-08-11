@@ -23,6 +23,7 @@ class LotResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'total_collected' => $this->total_collected,
+            'total_collected_in_percent' => round($this->total_collected / $this->price * 100, 2),
             'status' => $this->is_completed ? 'Completed' : 'Not completed'
         ];
     }

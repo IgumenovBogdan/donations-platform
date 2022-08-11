@@ -6,8 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeSubscritionTariffRequest;
 use App\Http\Requests\SubscribeToOrganizationRequest;
+use App\Models\Contributor;
+use App\Models\Subscription;
 use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
@@ -26,6 +29,7 @@ class SubscriptionController extends Controller
 
     public function changeTariff(ChangeSubscritionTariffRequest $request, string $id): JsonResponse
     {
+        $this->authorize('update', Subscription::findOrFail($id));
         return response()->json($this->subscriptionService->changeTariff($request, $id));
     }
 }

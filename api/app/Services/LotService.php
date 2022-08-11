@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Http\Requests\CreateLotRequest;
 use App\Http\Requests\UpdateLotRequest;
 use App\Http\Resources\LotResource;
+use App\Jobs\SendNewLotMessageToSubscriptions;
 use App\Models\Lot;
 use Illuminate\Http\JsonResponse;
 
@@ -21,6 +22,9 @@ class LotService
                 'total_collected' => 0
             ]
         ));
+
+        SendNewLotMessageToSubscriptions::dispatch($request->user()->organization->subscriptions, $lot);
+
         return new LotResource($lot);
     }
 
