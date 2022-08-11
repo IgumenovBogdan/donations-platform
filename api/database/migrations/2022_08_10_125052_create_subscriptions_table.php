@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->string('tariff');
             $table->integer('amount');
+            $table->date('subscribed_at');
         });
     }
 

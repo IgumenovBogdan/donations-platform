@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeSubscritionTariffRequest;
 use App\Http\Requests\SubscribeToOrganizationRequest;
 use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
@@ -21,5 +22,10 @@ class SubscriptionController extends Controller
     public function payForSubscription(SubscribeToOrganizationRequest $request, string $id): JsonResponse
     {
         return $this->subscriptionService->payForSubscription($request, $id);
+    }
+
+    public function changeTariff(ChangeSubscritionTariffRequest $request, string $id): JsonResponse
+    {
+        return response()->json($this->subscriptionService->changeTariff($request, $id));
     }
 }

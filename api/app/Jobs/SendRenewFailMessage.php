@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Contributor;
+use App\Mail\RenewSubscriptionFailMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
-class SendReportsToContributors implements ShouldQueue
+class SendRenewFailMessage implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -24,7 +25,7 @@ class SendReportsToContributors implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(protected object $contributor)
     {
         //
     }
@@ -36,10 +37,6 @@ class SendReportsToContributors implements ShouldQueue
      */
     public function handle()
     {
-        foreach (Contributor::all() as $contributor) {
-            if($contributor->lots->count() !== 0) {
-                SendReport::dispatch($contributor);
-            }
-        }
+        Mail::to($this->contributor->user->email)->send(new RenewSubscriptionFailMessage());
     }
 }

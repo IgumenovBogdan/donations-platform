@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\CheckContributorsSubscriptions;
 use App\Jobs\SendReportsToContributors;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new SendReportsToContributors())->everyMinute();
+        $schedule->job(new SendReportsToContributors())->monthly();
+        $schedule->job(new CheckContributorsSubscriptions())->daily();
     }
 
     /**

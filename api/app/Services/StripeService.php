@@ -25,14 +25,15 @@ class StripeService
 
     public function checkCustomer(SubscribeToOrganizationRequest|StripeDonateRequest $request, Contributor $contributor): string
     {
-        if($contributor->customer_id === null) {
-            $customer = $this->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
-            $contributor->customer_id = $customer;
-            $contributor->save();
-            return $customer;
-        } else {
+        if($contributor->customer_id) {
             return $contributor->customer_id;
         }
+
+        $customerId = $this->createCustomerByCard(...$request->only('email', 'number', 'expMonth', 'expYear', 'cvc'));
+        $contributor->customer_id = $customerId;
+        $contributor->save();
+
+        return $customerId;
     }
 
     private function createCustomerByCard(

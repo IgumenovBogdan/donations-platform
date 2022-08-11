@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ContributorDonationsReport extends Mailable
+class RenewSubscriptionFailMessage extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -19,8 +19,10 @@ class ContributorDonationsReport extends Mailable
      *
      * @return void
      */
-    public function __construct(protected array $report)
-    {}
+    public function __construct()
+    {
+        //
+    }
 
     /**
      * Build the message.
@@ -29,8 +31,6 @@ class ContributorDonationsReport extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.contributorReport')->with([
-            'report' => $this->report
-        ]);
+        return $this->markdown('email.renewFailMessage');
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Jobs;
 
-use App\Models\Contributor;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SendReportsToContributors implements ShouldQueue
+class CheckSingleContributorSubscriptions implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -24,10 +22,8 @@ class SendReportsToContributors implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(protected object $contributor)
+    {}
 
     /**
      * Execute the job.
@@ -36,9 +32,9 @@ class SendReportsToContributors implements ShouldQueue
      */
     public function handle()
     {
-        foreach (Contributor::all() as $contributor) {
-            if($contributor->lots->count() !== 0) {
-                SendReport::dispatch($contributor);
+        foreach ($this->contributor->subscriptions as $subscription) {
+            if($subscription->subscribed_at->addMonths(1) < Carbon::now()) {
+                RenewContributorSubscription::dispatch($subscription);
             }
         }
     }

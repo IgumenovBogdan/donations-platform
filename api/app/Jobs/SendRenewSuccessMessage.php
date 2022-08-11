@@ -1,30 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Jobs;
 
-use App\Models\Contributor;
+use App\Mail\RenewSubscriptionSuccessMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
-class SendReportsToContributors implements ShouldQueue
+class SendRenewSuccessMessage implements ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(protected object $contributor)
     {
         //
     }
@@ -36,10 +32,6 @@ class SendReportsToContributors implements ShouldQueue
      */
     public function handle()
     {
-        foreach (Contributor::all() as $contributor) {
-            if($contributor->lots->count() !== 0) {
-                SendReport::dispatch($contributor);
-            }
-        }
+        Mail::to($this->contributor->user->email)->send(new RenewSubscriptionSuccessMessage($this->contributor->first_name));
     }
 }

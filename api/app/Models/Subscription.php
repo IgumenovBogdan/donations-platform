@@ -17,8 +17,11 @@ class Subscription extends Model
         'amount',
         'tariff',
         'contributor_id',
-        'organization_id'
+        'organization_id',
+        'subscribed_at'
     ];
+
+    protected $dates = ['subscribed_at'];
 
     public $timestamps = false;
 

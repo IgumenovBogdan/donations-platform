@@ -39,18 +39,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
 
-    Route::prefix('contributor')->controller(ContributorController::class)->group(function () {
-        Route::get('/history', 'getDonationHistory');
-    });
+   Route::prefix('contributor')->controller(ContributorController::class)->group(function () {
+       Route::get('/history', 'getDonationHistory');
+   });
 
-    Route::prefix('organization')->controller(LotController::class)->group(function () {
-        Route::get('/history/{lot}', 'getLotDonationHistory');
-    });
+   Route::prefix('organization')->controller(LotController::class)->group(function () {
+       Route::get('/history/{lot}', 'getLotDonationHistory');
+   });
 
-    Route::prefix('subscriptions')->controller(SubscriptionController::class)->group(function () {
-        Route::get('/tariffs', 'getSubscriptionTariffs');
-        Route::post('/subscribe/{id}', 'payForSubscription')->middleware([CheckSubscription::class]);
-    });
+   Route::prefix('subscriptions')->controller(SubscriptionController::class)->group(function () {
+       Route::get('/tariffs', 'getSubscriptionTariffs');
+       Route::post('/subscribe/{id}', 'payForSubscription')->middleware([CheckSubscription::class]);
+       Route::patch('/change-tariff/{id}', 'changeTariff');
+   });
 
    Route::prefix('stripe')->controller(StripePaymentController::class)->group(function () {
        Route::post('/donate/{lot}', 'donate');

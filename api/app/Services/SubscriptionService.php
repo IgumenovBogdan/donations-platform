@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\ChangeSubscritionTariffRequest;
 use App\Http\Requests\SubscribeToOrganizationRequest;
 use App\Models\Contributor;
 use App\Models\Organization;
@@ -50,5 +51,10 @@ class SubscriptionService
             DB::rollBack();
             throw new \DomainException('Subscribe error');
         }
+    }
+
+    public function changeTariff(ChangeSubscritionTariffRequest $request, string $id): Subscription
+    {
+        return $this->subscriptionsRepository->updateSubscriptionTariff($request, $id);
     }
 }

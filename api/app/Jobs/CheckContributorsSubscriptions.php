@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SendReportsToContributors implements ShouldQueue
+class CheckContributorsSubscriptions implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -37,8 +37,8 @@ class SendReportsToContributors implements ShouldQueue
     public function handle()
     {
         foreach (Contributor::all() as $contributor) {
-            if($contributor->lots->count() !== 0) {
-                SendReport::dispatch($contributor);
+            if($contributor->subscriptions->count() !== 0) {
+                CheckSingleContributorSubscriptions::dispatch($contributor);
             }
         }
     }
