@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/donate', 'donate');
         Route::post('/{id}/capture/{lotId}', 'capture');
         Route::post('/register', 'registerMerchant');
-//        Route::post('/set/{id}', 'setMerchantId');
+        Route::post('/set/{id}', 'setMerchantId');
     });
 
 });
