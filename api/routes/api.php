@@ -43,6 +43,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::middleware(CheckContributor::class)->prefix('contributor')->controller(ContributorController::class)->group(function () {
        Route::get('/history', 'getDonationHistory');
+       Route::get('/settings', 'getSettings');
+       Route::patch('/settings', 'updateSettings');
    });
 
    Route::middleware(CheckOrganization::class)->prefix('organization')->controller(LotController::class)->group(function () {
