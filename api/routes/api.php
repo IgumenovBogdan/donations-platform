@@ -8,6 +8,8 @@ use App\Http\Controllers\PaypalPaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Middleware\CheckContributor;
+use App\Http\Middleware\CheckOrganization;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
 
@@ -39,11 +41,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
    Route::apiResource('/lots', LotController::class)->only('store', 'update', 'destroy');
 
-   Route::prefix('contributor')->controller(ContributorController::class)->group(function () {
+   Route::middleware(CheckContributor::class)->prefix('contributor')->controller(ContributorController::class)->group(function () {
        Route::get('/history', 'getDonationHistory');
    });
 
-   Route::prefix('organization')->controller(LotController::class)->group(function () {
+   Route::middleware(CheckOrganization::class)->prefix('organization')->controller(LotController::class)->group(function () {
        Route::get('/history/{lot}', 'getLotDonationHistory');
    });
 

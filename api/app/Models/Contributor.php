@@ -18,8 +18,11 @@ class Contributor extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'user_id'
+        'user_id',
+        'settings'
     ];
+
+    protected $casts = ["settings" => "array"];
 
     public function user(): BelongsTo
     {
@@ -34,6 +37,23 @@ class Contributor extends Model
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function setting(string $name, $default = null)
+    {
+        if (array_key_exists($name, $this->settings)) {
+            return $this->settings[$name];
+        }
+        return $default;
+    }
+
+    public function settings(array $revisions, bool $save = true) : self
+    {
+        $this->settings = array_merge($this->settings, $revisions);
+        if ($save) {
+            $this->save();
+        }
+        return $this;
     }
 
     public function getFullName(): string

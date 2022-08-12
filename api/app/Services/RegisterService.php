@@ -50,7 +50,10 @@ class RegisterService
 
         $contributor = Contributor::create(array_merge(
             $request->only('first_name', 'middle_name', 'last_name'),
-            ['user_id' => $user->id]
+            [
+                'user_id' => $user->id,
+                'settings' => ['organization_notices' => true]
+            ]
         ));
 
         $token = $user->createToken('contributorToken')->plainTextToken;

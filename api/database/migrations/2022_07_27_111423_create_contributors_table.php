@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('merchant_id')->nullable();
             $table->string('middle_name');
             $table->string('last_name');
+            $table->text('settings');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

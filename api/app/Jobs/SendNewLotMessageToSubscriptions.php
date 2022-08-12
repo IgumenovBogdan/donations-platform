@@ -37,7 +37,9 @@ class SendNewLotMessageToSubscriptions implements ShouldQueue
     public function handle()
     {
         foreach ($this->subscriptions as $subscription) {
-            SendNewLotMessage::dispatch($subscription->contributor, $this->lot);
+            if($subscription->contributor->settings['organization_notices']) {
+                SendNewLotMessage::dispatch($subscription->contributor, $this->lot);
+            }
         }
     }
 }
