@@ -29,7 +29,7 @@ class OrganizationController extends Controller
 
     public function update(UpdateOrganizationRequest $request, Organization $organization): OrganizationResource
     {
-        $this->authorize('update', $organization);
+        $this->authorize('owner', $organization);
         return $this->organizationService->update($request, $organization);
     }
 }

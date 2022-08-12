@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
 
     public function changeTariff(ChangeSubscritionTariffRequest $request, string $id): JsonResponse
     {
-        $this->authorize('update', Subscription::findOrFail($id));
+        $this->authorize('owner', Subscription::findOrFail($id));
         return response()->json($this->subscriptionService->changeTariff($request, $id));
     }
 }

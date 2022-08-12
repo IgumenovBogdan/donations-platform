@@ -43,7 +43,7 @@ class LotController extends Controller
 
     public function update(UpdateLotRequest $request, Lot $lot): LotResource
     {
-        $this->authorize('update', $lot);
+        $this->authorize('owner', $lot);
         return $this->lotService->update($request, $lot);
     }
 
@@ -54,7 +54,7 @@ class LotController extends Controller
 
     public function getLotDonationHistory(string $id): AnonymousResourceCollection
     {
-        $this->authorize('view', Lot::findOrFail($id));
+        $this->authorize('owner', Lot::findOrFail($id));
         return OrganizationDonationHistoryResource::collection($this->donationsRepository->getAllLotHistory($id));
     }
 }

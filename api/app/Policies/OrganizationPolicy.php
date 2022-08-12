@@ -13,7 +13,7 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Organization $organization): Response
+    public function owner(User $user, Organization $organization): Response
     {
         $condition = $user->id ?? null;
         return $condition === $organization->user_id

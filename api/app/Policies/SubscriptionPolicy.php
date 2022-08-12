@@ -11,7 +11,7 @@ class SubscriptionPolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Subscription $subscription): Response
+    public function owner(User $user, Subscription $subscription): Response
     {
         $condition = $user->id ?? null;
         return $condition === $subscription->contributor->user->id
