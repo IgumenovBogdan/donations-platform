@@ -34,7 +34,7 @@ class DonationsRepository
 
     public function getAllContributorHistory(User $user): LengthAwarePaginator
     {
-        return $user->contributor->lots()->orderBy('contributor_lot.payed_at', 'desc')->paginate(10);
+        return $user->contributor->lots()->orderBy('contributor_lot.payed_at', 'desc')->with('organization')->paginate(10);
     }
 
     public function getContributorTotalDonationsHistory(object $contributor): array
