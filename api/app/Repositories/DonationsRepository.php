@@ -23,34 +23,12 @@ class DonationsRepository
     {
         $organization = $request->user()->organization;
 
-        $filteredDonates = collect();
+        $report = [];
 
         foreach ($organization->lots as $lot) {
-            $donations = $lot->contributors()->where(
-                'contributor_lot.payed_at',
-                '>',
-                Carbon::now()->subDays(intval($request->days))
-            )->get();
-            foreach ($donations as $donation) {
-                $filteredDonates->push($donation);
+            foreach ($lot->contributors as $contributor) {
+                $report[$contributor->user->email] = $this->getContributorTotalDonationsHistory($contributor);
             }
-        }
-
-        $report = [];
-        $lastId = 0;
-        foreach ($filteredDonates as $contributor) {
-            $lot = Lot::find($contributor->pivot->lot_id);
-            if ($lot->id == $lastId) {
-                $report[$lot->id]['total_sent'] += $contributor->pivot->total_sent;
-            } else {
-                $report[$lot->id] = [
-                    'lot' => $lot->name,
-                    'contributor' => $contributor->first_name,
-                    'total_sent' => $contributor->pivot->total_sent,
-                    'status' => $lot->is_completed ? 'Completed' : 'Not completed'
-                ];
-            }
-            $lastId = $lot->id;
         }
 
         return $report;
