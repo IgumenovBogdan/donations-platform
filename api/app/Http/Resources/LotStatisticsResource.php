@@ -18,7 +18,7 @@ class LotStatisticsResource extends JsonResource
     {
         return [
             'lot_info' => new LotResource($this),
-            'latest_donations' => LotDonationsHistoryResource::collection($this->contributors()->orderBy('contributor_lot.created_at', 'desc')->paginate(10))
+            'latest_donations' => LotDonationsHistoryResource::collection($this->contributors()->orderBy('contributor_lot.payed_at', 'desc')->paginate(10))
         ];
     }
 }

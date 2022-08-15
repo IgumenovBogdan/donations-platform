@@ -21,7 +21,7 @@ class LotDonationsHistoryResource extends JsonResource
             'id' => $this->pivot->id,
             'contributor' => $this->getFullName(),
             'total_sent' => $this->pivot->total_sent,
-            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->format('Y.m.d H:i:s')
+            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->payed_at)->format('Y.m.d H:i:s')
         ];
     }
 }
