@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLotRequest;
 use App\Http\Requests\UpdateLotRequest;
+use App\Http\Resources\LotDonationsHistoryResource;
 use App\Http\Resources\LotResource;
-use App\Http\Resources\OrganizationDonationHistoryResource;
+use App\Http\Resources\LotStatisticsResource;
 use App\Models\Lot;
-use App\Models\Organization;
 use App\Repositories\DonationsRepository;
 use App\Repositories\LotsRepository;
 use App\Services\LotService;
@@ -52,9 +52,14 @@ class LotController extends Controller
         return $this->lotService->destroy($lot);
     }
 
-    public function getLotDonationHistory(string $id): AnonymousResourceCollection
+    public function getLotDonationHistory(Lot $lot): AnonymousResourceCollection
     {
-        $this->authorize('owner', Lot::findOrFail($id));
-        return OrganizationDonationHistoryResource::collection($this->donationsRepository->getAllLotHistory($id));
+        $this->authorize('owner', $lot);
+        return LotDonationsHistoryResource::collection($this->donationsRepository->getAllLotHistory($lot));
+    }
+
+    public function getLotStatistics(Lot $lot): LotStatisticsResource
+    {
+        return new LotStatisticsResource($lot);
     }
 }

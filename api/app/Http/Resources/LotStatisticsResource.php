@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
-class OrganizationDonationHistoryResource extends JsonResource
+class LotStatisticsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +17,8 @@ class OrganizationDonationHistoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->pivot->id,
-            'contributor' => $this->getFullName(),
-            'total_sent' => $this->pivot->total_sent,
-            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->format('Y.m.d H:i:s')
+            'lot_info' => new LotResource($this),
+            'latest_donations' => LotDonationsHistoryResource::collection($this->contributors()->orderBy('contributor_lot.created_at', 'desc')->paginate(10))
         ];
     }
 }

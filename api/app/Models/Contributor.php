@@ -31,29 +31,12 @@ class Contributor extends Model
 
     public function lots(): BelongsToMany
     {
-        return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'created_at', 'id');
+        return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'payed_at', 'id');
     }
 
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class);
-    }
-
-    public function setting(string $name, $default = null)
-    {
-        if (array_key_exists($name, $this->settings)) {
-            return $this->settings[$name];
-        }
-        return $default;
-    }
-
-    public function settings(array $revisions, bool $save = true) : self
-    {
-        $this->settings = array_merge($this->settings, $revisions);
-        if ($save) {
-            $this->save();
-        }
-        return $this;
     }
 
     public function getFullName(): string

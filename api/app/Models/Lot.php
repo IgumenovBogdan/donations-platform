@@ -29,6 +29,6 @@ class Lot extends Model
 
     public function contributors(): BelongsToMany
     {
-        return $this->belongsToMany(Contributor::class)->withPivot('total_sent', 'created_at', 'id');
+        return $this->belongsToMany(Contributor::class)->withPivot('total_sent', 'payed_at', 'id');
     }
 }

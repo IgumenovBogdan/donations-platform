@@ -7,15 +7,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
+use App\Repositories\DonationsRepository;
 use App\Services\OrganizationService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class OrganizationController extends Controller
 {
     public function __construct(
-        private readonly OrganizationService $organizationService
-    )
-    {}
+        private readonly OrganizationService $organizationService,
+        private readonly DonationsRepository $donationsRepository
+    ) {}
 
     public function index(): AnonymousResourceCollection
     {
@@ -31,5 +33,11 @@ class OrganizationController extends Controller
     {
         $this->authorize('owner', $organization);
         return $this->organizationService->update($request, $organization);
+    }
+
+    public function getOrganizationStatistics(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $this->authorize('owner', $request->user()->organization);
+        return response()->json($this->donationsRepository->getAllOrganizationTotalHistoryByPeriod($request));
     }
 }

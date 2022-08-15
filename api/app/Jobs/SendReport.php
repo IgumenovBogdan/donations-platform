@@ -36,6 +36,6 @@ class SendReport implements ShouldQueue
      */
     public function handle(DonationsRepository $donationsRepository)
     {
-        Mail::to($this->contributor->user->email)->send(new ContributorDonationsReport($donationsRepository->getTotalDonationsHistory($this->contributor)));
+        Mail::to($this->contributor->user->email)->send(new ContributorDonationsReport($donationsRepository->getContributorTotalDonationsHistory($this->contributor)));
     }
 }
