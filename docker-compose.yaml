@@ -35,12 +35,12 @@ services:
         ports:
             - "82:80"
 
-    node-watch:
-        image: node:15.6
-        volumes:
-            - ./frontend:/var/www
-        working_dir: /var/www
-        command: sh -c "npm run watch"
+    #node-watch:
+    #    image: node:15.6
+    #    volumes:
+    #        - ./frontend:/var/www
+    #    working_dir: /var/www
+    #    command: sh -c "npm run watch"
 
     nodejs:
         image: node:15.6
