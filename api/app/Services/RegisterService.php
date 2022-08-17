@@ -35,7 +35,7 @@ class RegisterService
         return collect([
             'token' => $token,
             'user' => new UserResource($user),
-            'role_data' => new OrganizationResource($organization)
+//            'role_data' => new OrganizationResource($organization)
         ]);
     }
 
@@ -61,7 +61,7 @@ class RegisterService
         return collect([
             'token' => $token,
             'user' => new UserResource($user),
-            'role_data' => new ContributorResource($contributor)
+//            'role_data' => new ContributorResource($contributor)
         ]);
     }
 }

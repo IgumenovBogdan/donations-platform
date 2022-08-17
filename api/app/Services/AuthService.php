@@ -26,7 +26,7 @@ class AuthService
         if($user->organization()->first()) {
             return [
                 'user' => new UserResource($user),
-                'role_data' => new OrganizationResource($user->organization()->first()),
+//                'role_data' => new OrganizationResource($user->organization()->first()),
                 'token' => $user->createToken('organizationToken')->plainTextToken
             ];
         }
@@ -34,7 +34,7 @@ class AuthService
         if($user->contributor()->first()) {
             return [
                 'user' => new UserResource($user),
-                'role_data' => new ContributorResource($user->contributor()->first()),
+//                'role_data' => new ContributorResource($user->contributor()->first()),
                 'token' => $user->createToken('organizationToken')->plainTextToken
             ];
         }

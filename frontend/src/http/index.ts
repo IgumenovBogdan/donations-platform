@@ -3,12 +3,17 @@ import axios from 'axios';
 export const API_URL = 'http://localhost:85/api'
 
 const $api = axios.create({
-    withCredentials: true,
+    withCredentials: false,
     baseURL: API_URL
 })
 
 $api.interceptors.request.use((config) => {
-    config.headers!.Authotization = `Bearer ${localStorage.getItem('token')}`
+
+    //need check for public api-endpoints (lots and organization index && show methods)
+
+    if(localStorage.getItem('token')) {
+        config.headers!.authotization = `Bearer ${localStorage.getItem('token')}`
+    }
     return config;
 })
 
