@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import Auth from "./store/auth";
 
-interface State {
+interface Store {
     auth: Auth
 }
 
 const auth = new Auth();
 
-export const Context = createContext<State>({
+export const Context = createContext<Store>({
     auth
 })
 

@@ -1,20 +1,26 @@
 import axios from 'axios';
 
-export const API_URL = 'http://localhost:85/api'
+const baseDomain = 'http://localhost:85/api';
 
+const baseURL = `${baseDomain}`;
 const $api = axios.create({
-    withCredentials: false,
-    baseURL: API_URL
-})
+    baseURL
+});
+$api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            if (config.headers) {
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
 
-$api.interceptors.request.use((config) => {
+        return config;
+    },
 
-    //need check for public api-endpoints (lots and organization index && show methods)
-
-    if(localStorage.getItem('token')) {
-        config.headers!.authotization = `Bearer ${localStorage.getItem('token')}`
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-})
+);
 
-export default $api
+export default $api;

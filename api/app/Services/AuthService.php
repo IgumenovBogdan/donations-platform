@@ -53,14 +53,14 @@ class AuthService
         if($user->organization()->first()) {
             return [
                 'user' => new UserResource($user),
-                'role_data' => new OrganizationResource($user->organization()->first())
+//                'role_data' => new OrganizationResource($user->organization()->first())
             ];
         }
 
         if($user->contributor()->first()) {
             return [
                 'user' => new UserResource($user),
-                'role_data' => new ContributorResource($user->contributor()->first())
+//                'role_data' => new ContributorResource($user->contributor()->first())
             ];
         }
     }

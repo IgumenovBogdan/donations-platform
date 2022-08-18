@@ -6,6 +6,7 @@ export default class Auth {
 
     user = {} as IUser;
     isAuth = false;
+    isLoading = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -19,10 +20,13 @@ export default class Auth {
         this.user = user;
     }
 
+    setLoading(bool: boolean) {
+        this.isLoading = bool;
+    }
+
     async login(email: string, password: string) {
         try {
             const response = await AuthService.login(email, password);
-            console.log({response});
             localStorage.setItem('token', response.data.token);
             this.setAuth(true);
             this.setUser(response.data.user);
@@ -39,6 +43,17 @@ export default class Auth {
             this.setUser({} as IUser);
         } catch (e: any) {
             console.log(e.response?.data?.message)
+        }
+    }
+
+    async checkAuth() {
+        this.setLoading(true);
+        try {
+            this.setAuth(true)
+        } catch (e: any) {
+            console.log(e.response?.data?.message)
+        } finally {
+            this.setLoading(false)
         }
     }
 
