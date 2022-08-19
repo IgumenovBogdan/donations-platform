@@ -45,12 +45,6 @@ const App: FC = () => {
         return <div>Loading...</div>
     }
 
-    // if (!auth.isAuth) {
-    //     return (
-    //         <LoginForm/>
-    //     )
-    // }
-
     return (
         <>
             <ThemeProvider theme={theme}>

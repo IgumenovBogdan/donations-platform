@@ -1,4 +1,4 @@
-import Home from "./pages/Home";
+import Lots from "./pages/Lots";
 import About from "./pages/About";
 
 import {FC} from "react";
@@ -16,14 +16,14 @@ interface Route {
 export const navbarRoutes: Array<Route> = [
     {
         key: 'home-route',
-        title: 'Home',
+        title: 'Lots',
         path: '/',
         enabled: true,
-        component: Home
+        component: Lots
     },
     {
         key: 'about-route',
-        title: 'About',
+        title: 'Organizations',
         path: '/about',
         enabled: true,
         component: About

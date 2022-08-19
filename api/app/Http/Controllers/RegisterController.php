@@ -20,13 +20,13 @@ class RegisterController extends Controller
     {
         $organization = $this->registerService->registerOrganization($request);
         session()->put('token', $organization->only('token'));
-        return response($organization->only('user', 'role_data'));
+        return response($organization->only('user', 'role_data', 'token'));
     }
 
     public function registerContributor(RegisterContributorRequest $request): Response|Application|ResponseFactory
     {
         $contributor = $this->registerService->registerContributor($request);
         session()->put('token', $contributor->only('token'));
-        return response($contributor->only('user', 'role_data'));
+        return response($contributor->only('user', 'role_data', 'token'));
     }
 }

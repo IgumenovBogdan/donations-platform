@@ -2,15 +2,19 @@ import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import Auth from "./store/auth";
+import Lots from "./store/lots";
 
 interface Store {
-    auth: Auth
+    auth: Auth,
+    lots: Lots
 }
 
 const auth = new Auth();
+const lots = new Lots();
 
 export const Context = createContext<Store>({
-    auth
+    auth,
+    lots
 })
 
 const root = ReactDOM.createRoot(
@@ -19,7 +23,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Context.Provider value={{
-        auth
+        auth,
+        lots
     }}>
         <App />
     </Context.Provider>

@@ -1,35 +1,52 @@
 import React, {useContext} from 'react';
 import {observer} from "mobx-react-lite";
-import {Button, Link} from "@mui/material";
+import {Button} from "@mui/material";
 import {Context} from "../../../index";
-import {authorizationRoutes} from "../../../routes";
-import {NavLink} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const NavbarRightButtons = () => {
 
     const {auth} = useContext(Context);
+    const navigate = useNavigate();
 
     if(auth.isAuth) {
         return (
-            <Button variant="text" onClick={() => auth.logout()}>Logout</Button>
+            <>
+                <Button variant="text" startIcon={<AccountCircleIcon />}>
+                    Account
+                </Button>
+                <Button variant="text" onClick={() => auth.logout()}>Logout</Button>
+            </>
         )
+    }
+
+    const navigateLogin = () => {
+        navigate('/login')
+    }
+
+    const navigateSignUp = () => {
+        navigate('/registration')
     }
 
     return (
         <>
-            {authorizationRoutes.map((page) => (
-                <Link
-                    key={page.key}
-                    component={NavLink}
-                    to={page.path}
-                    color="black"
-                    underline="none"
-                    variant="button"
-                    sx={{ fontSize: "large", marginLeft: "2rem" }}
-                >
-                    {page.title}
-                </Link>
-            ))}
+            <Button
+                onClick={navigateSignUp}
+                variant="contained"
+                sx={{
+                    mr: 5,
+                    borderRadius: 12
+                }}
+            >
+                Sign Up
+            </Button>
+            <Button
+                onClick={navigateLogin}
+                variant="text"
+            >
+                Login
+            </Button>
         </>
     );
 };

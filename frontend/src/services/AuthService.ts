@@ -14,8 +14,19 @@ export default class AuthService {
         description: string,
         phone: string
     ): Promise<AxiosResponse<AuthResponse>> {
-        return $api.post<AuthResponse>('/registerOrganization',
+        return $api.post<AuthResponse>('/register-organization',
             {email, password, name, description, phone})
+    }
+
+    static async registerContributor(
+        email: string,
+        password: string,
+        first_name: string,
+        middle_name: string,
+        last_name: string
+    ): Promise<AxiosResponse<AuthResponse>> {
+        return $api.post<AuthResponse>('/register-contributor',
+            {email, password, first_name, middle_name, last_name})
     }
 
     static async logout(): Promise<void> {
