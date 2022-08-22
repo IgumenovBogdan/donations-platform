@@ -79,13 +79,16 @@ const LotsList: FC = () => {
                     id="outlined-basic"
                     label="Search by organization..."
                     variant="outlined"
-                    inputProps={{
-                        style: { backgroundColor: 'white',  borderRadius: '25px'},
-                    }}
                     sx={{
                         width: "50%",
-                        borderRadius: 12
+                        borderRadius: 12,
+                        '& fieldset': {
+                            paddingLeft: (theme) => theme.spacing(2.5),
+                            borderRadius: '30px',
+                            backgroundColor: 'white'
+                        },
                     }}
+
                 />
                 <FormControl
                     variant="standard"
@@ -155,7 +158,6 @@ const LotsList: FC = () => {
                 mt: 3
             }}>
                 <Button
-
                     endIcon={<ExpandMoreIcon />}
                     sx={{color: "#6746c3"}}
                     onClick={() => handleSeeMoreClick()}
