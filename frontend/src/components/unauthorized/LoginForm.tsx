@@ -34,9 +34,10 @@ const LoginForm: FC = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    mr: 2, ml: 2, mb: 5, mt: 5
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
                     <ExitToAppIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">

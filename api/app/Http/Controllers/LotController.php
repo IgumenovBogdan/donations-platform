@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLotRequest;
+use App\Http\Requests\SearchLotRequest;
 use App\Http\Requests\UpdateLotRequest;
 use App\Http\Resources\LotDonationsHistoryResource;
 use App\Http\Resources\LotResource;
@@ -25,9 +26,9 @@ class LotController extends Controller
     )
     {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(SearchLotRequest $request): AnonymousResourceCollection
     {
-        return LotResource::collection($this->lotsRepository->getAll());
+        return LotResource::collection($this->lotsRepository->getAll($request));
     }
 
     public function store(CreateLotRequest $request): LotResource

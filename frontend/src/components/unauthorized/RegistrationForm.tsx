@@ -104,7 +104,7 @@ const RegistrationForm: FC = () => {
                 width: 500,
                 mr: 2, ml: 2, mb: 5, mt: 5
             }}>
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
                     <HowToRegIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{ mb: 1 }}>

@@ -1,5 +1,5 @@
 import React, {FC, ReactElement} from 'react';
-import {Box, Typography} from "@mui/material";
+import {Box, Container, Typography} from "@mui/material";
 
 const About: FC = (): ReactElement => {
     return (
@@ -7,10 +7,11 @@ const About: FC = (): ReactElement => {
             flexGrow: 1,
             backgroundColor: 'whitesmoke',
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: 'center'
         }}>
-            <Typography variant="h3">About</Typography>
+            <Container maxWidth="sm">
+                <Typography variant="h3">About</Typography>
+            </Container>
         </Box>
     );
 };

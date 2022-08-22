@@ -7,23 +7,33 @@ import {
     Menu,
     MenuItem,
     Toolbar,
-    Typography, Button,
+    Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { navbarRoutes } from "../../../routes";
+import {authorizationRoutes, navbarRoutes} from "../../../routes";
 import { NavLink } from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import NavbarRightButtons from "./NavbarRightButtons";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const Navbar: FC = (): ReactElement => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenNavMenu = (event: any) => {
         setAnchorElNav(event.currentTarget);
     };
 
+    const handleOpenUserMenu = (event: any) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
     };
 
     return (
@@ -31,7 +41,7 @@ const Navbar: FC = (): ReactElement => {
             sx={{
                 width: "100%",
                 height: "auto",
-                backgroundColor: "primary.light",
+                backgroundColor: "primary.main",
             }}
         >
             <Container maxWidth="xl">
@@ -39,6 +49,7 @@ const Navbar: FC = (): ReactElement => {
                     <Typography
                         variant="h6"
                         noWrap
+                        color="white"
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -53,7 +64,9 @@ const Navbar: FC = (): ReactElement => {
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
-                            color="inherit"
+                            sx={{
+                                color: "#fb8c00"
+                            }}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -95,10 +108,58 @@ const Navbar: FC = (): ReactElement => {
                         variant="h6"
                         noWrap
                         component="div"
+                        color="white"
                         sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
                     >
                         DonationsUA
                     </Typography>
+                    <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "none" } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenUserMenu}
+                            sx={{
+                                color: "#fb8c00"
+                            }}
+                        >
+                            <ExitToAppIcon />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left",
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "left",
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                            sx={{
+                                display: { xs: "block", md: "none" },
+                            }}
+                        >
+                            {authorizationRoutes.map((page) => (
+                                <Link
+                                    key={page.key}
+                                    component={NavLink}
+                                    to={page.path}
+                                    color="black"
+                                    underline="none"
+                                    variant="button"
+                                >
+                                    <MenuItem onClick={handleCloseUserMenu}>
+                                        <Typography textAlign="center">{page.title}</Typography>
+                                    </MenuItem>
+                                </Link>
+                            ))}
+                        </Menu>
+                    </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         <Box
                             sx={{
@@ -114,7 +175,7 @@ const Navbar: FC = (): ReactElement => {
                                     key={page.key}
                                     component={NavLink}
                                     to={page.path}
-                                    color="black"
+                                    color="white"
                                     underline="none"
                                     variant="button"
                                     sx={{ fontSize: "large", marginLeft: "2rem" }}
@@ -124,7 +185,7 @@ const Navbar: FC = (): ReactElement => {
                             ))}
                         </Box>
                     </Box>
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <NavbarRightButtons />
                     </Box>
                 </Toolbar>

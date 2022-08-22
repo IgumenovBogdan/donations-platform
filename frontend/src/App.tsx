@@ -27,15 +27,15 @@ const App: FC = () => {
     const theme = createTheme({
         palette: {
             primary: {
-                light: "#63b8ff",
-                main: "#0989e3",
-                dark: "#005db0",
-                contrastText: "#000",
+                light: "#6746c3",
+                main: "#311b92",
+                dark: "#000063",
+                contrastText: "#FFF",
             },
             secondary: {
-                main: "#4db6ac",
-                light: "#82e9de",
-                dark: "#00867d",
+                main: "#fb8c00",
+                light: "#ffbd45",
+                dark: "#c25e00",
                 contrastText: "#000",
             },
         },
