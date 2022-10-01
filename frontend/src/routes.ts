@@ -4,6 +4,7 @@ import About from "./pages/About";
 import {FC} from "react";
 import RegistrationForm from "./components/unauthorized/RegistrationForm";
 import LoginForm from "./components/unauthorized/LoginForm";
+import SupportLot from "./components/unauthorized/SupportLot";
 
 interface Route {
     key: string,
@@ -44,5 +45,15 @@ export const authorizationRoutes: Array<Route> = [
         path: '/registration',
         enabled: true,
         component: RegistrationForm
+    }
+]
+
+export const publicRoutes: Array<Route> = [
+    {
+        key: 'support-lot',
+        title: 'Support',
+        path: '/lot/:lotId',
+        enabled: true,
+        component: SupportLot
     }
 ]

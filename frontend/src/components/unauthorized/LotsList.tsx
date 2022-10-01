@@ -53,15 +53,13 @@ const LotsList: FC = () => {
         lots.getLots(take + 1, sortBy, debouncedSearchTerm)
     }
 
-    const navigateLot = () => {
-        navigate('/about')
+    const navigateLot = (id: string) => {
+        navigate('/lot/' + id)
     }
 
     if (lots.isLoading) {
         return <LinearProgress color="primary"/>
     }
-
-    console.log(take)
 
     return (
 
@@ -146,7 +144,7 @@ const LotsList: FC = () => {
                         <div style={{display: "flex", justifyContent: "end"}}>
                             <ActionButton
                                 text={'Support'}
-                                action={navigateLot}
+                                action={() => navigateLot(lot.id)}
                             />
                         </div>
                     </AccordionDetails>
