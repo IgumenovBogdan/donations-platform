@@ -12,15 +12,32 @@ const NavbarRightButtons = () => {
     const {auth} = useContext(Context);
     const navigate = useNavigate();
 
+    const navigateAccount = () => {
+        navigate('/account')
+    }
+
+    const handleLogout = () => {
+        auth.logout().then(() => {
+            if(!auth.error) {
+                navigate('/')
+            }
+        });
+    }
+
     if(auth.isAuth) {
         return (
             <>
-                <Button variant="text" startIcon={<AccountCircleIcon />} sx={{color: "#ffbd45"}}>
+                <Button
+                    onClick={navigateAccount}
+                    variant="text"
+                    startIcon={<AccountCircleIcon />}
+                    sx={{color: "#ffbd45"}}
+                >
                     Account
                 </Button>
                 <IconButton
                     aria-label="logout"
-                    onClick={() => auth.logout()}
+                    onClick={handleLogout}
                     sx={{color: "#ffbd45"}}
                 >
                     <Logout />

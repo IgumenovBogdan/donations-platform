@@ -2,7 +2,7 @@ import React, {FC, useContext, useEffect} from 'react';
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 import {CssBaseline, Box, createTheme, ThemeProvider} from "@mui/material";
-import {navbarRoutes as appRoutes, publicRoutes} from "./routes";
+import {navbarRoutes as appRoutes, privateRoutes, publicRoutes} from "./routes";
 import {authorizationRoutes} from "./routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/main/Navbar/Navbar";
@@ -18,6 +18,10 @@ const App: FC = () => {
 
     if (!auth.isAuth) {
         routes = appRoutes.concat(authorizationRoutes);
+    }
+
+    if (auth.isAuth) {
+        routes = appRoutes.concat(privateRoutes);
     }
 
     useEffect(() => {

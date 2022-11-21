@@ -1,10 +1,19 @@
 import {AxiosResponse} from 'axios';
 import {AuthResponse} from "../models/response/AuthResponse";
 import $api from "../http";
+import {IUser} from "../models/IUser";
+
+interface UserResponse {
+    user: IUser
+}
 
 export default class AuthService {
     static async login(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
         return $api.post<AuthResponse>('/login', {email, password})
+    }
+
+    static async user(): Promise<AxiosResponse<UserResponse>> {
+        return $api.get<UserResponse>('/user')
     }
 
     static async registerOrganization(

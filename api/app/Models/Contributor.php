@@ -29,6 +29,11 @@ class Contributor extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class)->withPivot('sent', 'payed_at', 'id');
+    }
+
     public function lots(): BelongsToMany
     {
         return $this->belongsToMany(Lot::class)->withPivot('total_sent', 'payed_at', 'id');

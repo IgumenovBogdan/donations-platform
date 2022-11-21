@@ -24,7 +24,7 @@ class RegisterOrganizationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns|unique:users,email',
+//            'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|min:8',
             'name' => 'required|string',
             'description' => 'required|max:255',

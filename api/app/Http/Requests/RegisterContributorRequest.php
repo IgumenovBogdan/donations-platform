@@ -24,7 +24,7 @@ class RegisterContributorRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns|unique:users,email',
+//            'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|min:8',
             'first_name' => 'required|string',
             'middle_name' => 'required|string',

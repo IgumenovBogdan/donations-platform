@@ -19,7 +19,10 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'role' => $this->organization ? 'organization' : 'contributor'
+            'role' => $this->organization ? 'organization' : 'contributor',
+            'account_title' => $this->organization
+                ? $this->organization->name
+                : $this->contributor->first_name . ' ' . $this->contributor->last_name
         ];
     }
 }

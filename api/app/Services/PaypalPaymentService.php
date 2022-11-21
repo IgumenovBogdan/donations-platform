@@ -34,6 +34,10 @@ class PaypalPaymentService
            'total_sent' => $price
         ]);
 
+        $contributor->organizations()->attach($lot->organization->id, [
+            'sent' => $request->price
+        ]);
+
         return $payment;
     }
 

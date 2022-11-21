@@ -1,5 +1,6 @@
 import Lots from "./pages/Lots";
 import About from "./pages/About";
+import Account from "./pages/Account";
 
 import {FC} from "react";
 import RegistrationForm from "./components/unauthorized/RegistrationForm";
@@ -55,5 +56,15 @@ export const publicRoutes: Array<Route> = [
         path: '/lot/:lotId',
         enabled: true,
         component: SupportLot
+    }
+]
+
+export const privateRoutes: Array<Route> = [
+    {
+        key: 'account-route',
+        title: 'Account',
+        path: '/account',
+        enabled: true,
+        component: Account
     }
 ]

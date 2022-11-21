@@ -45,12 +45,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
        Route::get('/history', 'getDonationHistory');
        Route::get('/settings', 'getSettings');
        Route::patch('/settings', 'updateSettings');
+
+       Route::get('/last-month', 'lastMonthDonates');
+       Route::get('/average', 'averagePerMonth');
+       Route::get('/most-donated', 'donatedTheMost');
    });
 
    Route::middleware(CheckOrganization::class)->prefix('organization')->controller(LotController::class)->group(function () {
        Route::get('/statistics', [OrganizationController::class, 'getOrganizationStatistics']);
        Route::get('/statistics/{lot}', 'getLotStatistics');
        Route::get('/history/{lot}', 'getLotDonationHistory');
+
+       Route::get('/last-week-sum', [OrganizationController::class, 'lastWeekContributorsDonates']);
+       Route::get('/last-week-transactions', [OrganizationController::class, 'lastWeekContributorsTransactions']);
+       Route::get('/top-contributors', [OrganizationController::class, 'topContributorsForTheYear']);
    });
 
    Route::prefix('subscriptions')->controller(SubscriptionController::class)->group(function () {

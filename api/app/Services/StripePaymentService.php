@@ -40,6 +40,10 @@ class StripePaymentService
                 'total_sent' => $request->price
             ]);
 
+            $contributor->organizations()->attach($lot->organization->id, [
+                'sent' => $request->price
+            ]);
+
             DB::commit();
 
             return response()->json([

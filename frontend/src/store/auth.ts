@@ -54,6 +54,8 @@ export default class Auth {
     async checkAuth() {
         this.setLoading(true);
         try {
+            const response = await AuthService.user();
+            this.setUser(response.data.user)
             this.setAuth(true)
         } catch (e: any) {
             console.log(e.response?.data?.message)
