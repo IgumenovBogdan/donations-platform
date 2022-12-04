@@ -3,26 +3,27 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import Auth from "./store/auth";
 import Lots from "./store/lots";
-import StatisticsOrganization from "./store/statisticsOrganization";
-import StatisticsContributor from "./store/statisticsContributor";
+import OrganizationAccount from "./store/organizationAccount";
+import ContributorAccount from "./store/contributorAccount";
+import {AlertProvider} from "./contexts/AlertContext";
 
 interface Store {
     auth: Auth,
     lots: Lots,
-    statisticsOrganization: StatisticsOrganization,
-    statisticsContributor: StatisticsContributor
+    organizationAccount: OrganizationAccount,
+    contributorAccount: ContributorAccount
 }
 
 const auth = new Auth();
 const lots = new Lots();
-const statisticsOrganization = new StatisticsOrganization();
-const statisticsContributor = new StatisticsContributor();
+const organizationAccount = new OrganizationAccount();
+const contributorAccount = new ContributorAccount();
 
 export const Context = createContext<Store>({
     auth,
     lots,
-    statisticsOrganization,
-    statisticsContributor
+    organizationAccount,
+    contributorAccount
 })
 
 const root = ReactDOM.createRoot(
@@ -33,10 +34,12 @@ root.render(
     <Context.Provider value={{
         auth,
         lots,
-        statisticsOrganization,
-        statisticsContributor
+        organizationAccount,
+        contributorAccount
     }}>
-        <App />
+        <AlertProvider>
+            <App />
+        </AlertProvider>
     </Context.Provider>
   </React.StrictMode>
 );

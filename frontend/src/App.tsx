@@ -7,6 +7,7 @@ import {authorizationRoutes} from "./routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/main/Navbar/Navbar";
 import Footer from "./components/main/Footer";
+import AlertPopup from "./components/ui/AlertPopup";
 
 const App: FC = () => {
 
@@ -60,6 +61,7 @@ const App: FC = () => {
                     display="flex"
                     flexDirection="column"
                 >
+                    <AlertPopup />
                     <Router>
                         <Navbar />
                         <Routes>

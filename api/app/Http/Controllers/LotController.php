@@ -53,6 +53,11 @@ class LotController extends Controller
         return $this->lotService->destroy($lot);
     }
 
+    public function getLotsByOrganization(SearchLotRequest $request): AnonymousResourceCollection
+    {
+        return LotResource::collection($this->lotsRepository->getLotsByOrganization($request));
+    }
+
     public function getLotDonationHistory(Lot $lot): AnonymousResourceCollection
     {
         $this->authorize('owner', $lot);

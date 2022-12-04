@@ -64,15 +64,15 @@ export default class Auth {
         }
     }
 
-    async registerOrganization(
+    async registerOrganization(data: {
         email: string,
         password: string,
         name: string,
         description: string,
         phone: string
-    ) {
+    }) {
         try {
-            const response = await AuthService.registerOrganization(email, password, name, description, phone);
+            const response = await AuthService.registerOrganization(data);
             localStorage.setItem('token', response.data.token);
             this.setAuth(true);
             this.setUser(response.data.user);
@@ -81,15 +81,15 @@ export default class Auth {
         }
     }
 
-    async registerContributor(
+    async registerContributor(data: {
         email: string,
         password: string,
         first_name: string,
         middle_name: string,
         last_name: string
-    ) {
+    }) {
         try {
-            const response = await AuthService.registerContributor(email, password, first_name, middle_name, last_name);
+            const response = await AuthService.registerContributor(data);
             localStorage.setItem('token', response.data.token);
             this.setAuth(true);
             this.setUser(response.data.user);

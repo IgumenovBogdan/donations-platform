@@ -4,7 +4,7 @@ import StatisticsService from "../services/StatisticsService";
 import {IMostDonatedOrganizations} from "../models/IMostDonatedOrganizations";
 
 
-export default class StatisticsContributor {
+export default class ContributorAccount {
 
     lastMonthDonates!: ILastMonthContributorDonates[];
     mostDonatedOrganizations!: IMostDonatedOrganizations[];

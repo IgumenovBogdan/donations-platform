@@ -16,6 +16,7 @@ import OrganizationRegistrationForm from "../forms/OrganizationRegistrationForm"
 import {IOrganization} from "../../models/IOrganization";
 import ContributorRegistrationForm from "../forms/ContributorRegistrationForm";
 import {IContributor} from "../../models/IContributor";
+import useAlert from "../../hooks/useAlert";
 
 const RegistrationForm: FC = () => {
 
@@ -49,22 +50,30 @@ const RegistrationForm: FC = () => {
 
     const navigate = useNavigate();
 
+    const { setAlert } = useAlert();
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 
         if (registrationRole === 'organization') {
-            const {email, password, name, description, phone} = organizationState;
-            auth.registerOrganization(email, password, name, description, phone).then(() => {
-                if(!auth.error) {
+            auth.registerOrganization({...organizationState}).then(() => {
+                if(auth.error) {
+                    setAlert(auth.error, 'error');
+                    auth.setError('');
+                } else {
                     navigate('/')
+                    setAlert('Registration success!', 'success');
                 }
             });
         }
 
         if (registrationRole === 'contributor') {
-            const {email, password, first_name, middle_name, last_name} = contributorState;
-            auth.registerContributor(email, password, first_name, middle_name, last_name).then(() => {
-                if(!auth.error) {
+            auth.registerContributor({...contributorState}).then(() => {
+                if(auth.error) {
+                    setAlert(auth.error, 'error');
+                    auth.setError('');
+                } else {
                     navigate('/')
+                    setAlert('Registration success!', 'success');
                 }
             });
         }

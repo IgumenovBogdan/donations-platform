@@ -10,6 +10,7 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import LastWeekSumsTable from "../tables/Organization/LastWeekSumsTable";
 import LastWeekTransactionsTable from "../tables/Organization/LastWeekTransactionsTable";
+import LotsTable from "../tables/Organization/LotsTable";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -46,7 +47,7 @@ function a11yProps(index: number) {
 
 const OrganizationAccount: FC = (): ReactElement => {
 
-    const {statisticsOrganization} = useContext(Context)
+    const {organizationAccount} = useContext(Context)
     const {auth} = useContext(Context)
 
     const [value, setValue] = React.useState(0);
@@ -56,13 +57,15 @@ const OrganizationAccount: FC = (): ReactElement => {
     };
 
     useEffect(() => {
-        statisticsOrganization.getLastWeekSum()
-        statisticsOrganization.getLastWeekTransactions()
+        organizationAccount.getLastWeekSum()
+        organizationAccount.getLastWeekTransactions()
+        organizationAccount.getLotsByOrganization(1, '', '')
     }, [])
 
     return (
-        statisticsOrganization.lastWeekSum &&
-        statisticsOrganization.lastWeekTransactions &&
+        organizationAccount.lastWeekSum &&
+        organizationAccount.lastWeekTransactions &&
+        organizationAccount.lots &&
 
         <Box sx={{
             flexGrow: 1,
@@ -86,14 +89,16 @@ const OrganizationAccount: FC = (): ReactElement => {
                 </Box>
                 <TabPanel value={value} index={0}>
                     <LastWeekSumsTable
-                        lastWeekSum={statisticsOrganization.lastWeekSum}
+                        lastWeekSum={organizationAccount.lastWeekSum}
                     />
                     <LastWeekTransactionsTable
-                        lastWeekTransactions={statisticsOrganization.lastWeekTransactions}
+                        lastWeekTransactions={organizationAccount.lastWeekTransactions}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    Lots
+                    <LotsTable
+                        lots={organizationAccount.lots}
+                    />
                 </TabPanel>
             </Container>
         </Box>

@@ -52,6 +52,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    });
 
    Route::middleware(CheckOrganization::class)->prefix('organization')->controller(LotController::class)->group(function () {
+       Route::get('/lots', 'getLotsByOrganization');
+
        Route::get('/statistics', [OrganizationController::class, 'getOrganizationStatistics']);
        Route::get('/statistics/{lot}', 'getLotStatistics');
        Route::get('/history/{lot}', 'getLotDonationHistory');

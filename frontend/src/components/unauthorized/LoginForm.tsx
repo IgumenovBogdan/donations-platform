@@ -4,6 +4,7 @@ import {observer} from "mobx-react-lite";
 import {Avatar, Box, Button, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import useAlert from "../../hooks/useAlert";
 
 const LoginForm: FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -12,10 +13,16 @@ const LoginForm: FC = () => {
 
     const navigate = useNavigate();
 
+    const { setAlert } = useAlert();
+
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         auth.login(email, password).then(() => {
-            if(!auth.error) {
+            if(auth.error) {
+                setAlert(auth.error, 'error');
+                auth.setError('');
+            } else {
                 navigate('/')
+                setAlert('Login success!', 'success');
             }
         });
         e.preventDefault();

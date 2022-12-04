@@ -11,20 +11,20 @@ import MostDonatedOrganizationsTable from "../tables/Contributor/MostDonatedOrga
 
 const ContributorAccount: FC = (): ReactElement => {
 
-    const {statisticsContributor} = useContext(Context)
+    const {contributorAccount} = useContext(Context)
     const {auth} = useContext(Context)
 
     useEffect(() => {
-        statisticsContributor.getLastMonthDonates()
-        statisticsContributor.getMostDonatedOrganizations()
-        statisticsContributor.getAveragePerMonth()
+        contributorAccount.getLastMonthDonates()
+        contributorAccount.getMostDonatedOrganizations()
+        contributorAccount.getAveragePerMonth()
     }, [])
 
-    console.log(statisticsContributor.averagePerMonth)
+    console.log(contributorAccount.averagePerMonth)
 
     return (
-        statisticsContributor.lastMonthDonates &&
-        statisticsContributor.mostDonatedOrganizations &&
+        contributorAccount.lastMonthDonates &&
+        contributorAccount.mostDonatedOrganizations &&
 
         <Box sx={{
             flexGrow: 1,
@@ -34,9 +34,9 @@ const ContributorAccount: FC = (): ReactElement => {
         }}>
             <Container sx={{mt: 3, mb: 3}} maxWidth="md">
                 <Typography variant="h3" sx={{mb: 3}}>{auth.user.account_title}</Typography>
-                <Typography variant="h5" sx={{mb: 3}}>Average per month: <b>{statisticsContributor.averagePerMonth} $</b></Typography>
-                <LastMonthDonatesTable lastMonthDonates={statisticsContributor.lastMonthDonates} />
-                <MostDonatedOrganizationsTable mostDonatedOrganizations={statisticsContributor.mostDonatedOrganizations} />
+                <Typography variant="h5" sx={{mb: 3}}>Average per month: <b>{contributorAccount.averagePerMonth} $</b></Typography>
+                <LastMonthDonatesTable lastMonthDonates={contributorAccount.lastMonthDonates} />
+                <MostDonatedOrganizationsTable mostDonatedOrganizations={contributorAccount.mostDonatedOrganizations} />
             </Container>
         </Box>
     );

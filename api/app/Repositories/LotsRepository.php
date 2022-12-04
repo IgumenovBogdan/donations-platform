@@ -20,4 +20,13 @@ class LotsRepository
             ->with('organization')
             ->get();
     }
+
+    public function getLotsByOrganization(SearchLotRequest $request): Collection
+    {
+        return Lot::where('organization_id', $request->user()->organization->id)
+            ->where('name', 'LIKE', $request->query('s') . "%" ?? '')
+            ->orderBy('created_at', $request->query('order') ?? 'ASC')
+            ->take($request->query('take') * 10)
+            ->get();
+    }
 }
