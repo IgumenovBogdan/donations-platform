@@ -12,8 +12,8 @@ const AlertPopup = () => {
                 <Alert
                     severity={type as AlertColor}
                     sx={{
-                        position: 'absolute',
-                        zIndex: 10,
+                        position: 'fixed',
+                        zIndex: 10000,
                         m: 3
                     }}
                 >
