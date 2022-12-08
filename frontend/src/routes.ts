@@ -5,7 +5,7 @@ import Account from "./pages/Account";
 import {FC} from "react";
 import RegistrationForm from "./components/unauthorized/RegistrationForm";
 import LoginForm from "./components/unauthorized/LoginForm";
-import SupportLot from "./components/unauthorized/SupportLot";
+import SupportLot from "./components/unauthorized/SupportLot/SupportLot";
 
 interface Route {
     key: string,

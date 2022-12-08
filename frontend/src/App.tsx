@@ -15,8 +15,6 @@ const App: FC = () => {
 
     let routes = appRoutes;
 
-    routes = routes.concat(publicRoutes)
-
     if (!auth.isAuth) {
         routes = appRoutes.concat(authorizationRoutes);
     }
@@ -24,6 +22,8 @@ const App: FC = () => {
     if (auth.isAuth) {
         routes = appRoutes.concat(privateRoutes);
     }
+
+    routes = routes.concat(publicRoutes)
 
     useEffect(() => {
         if(localStorage.getItem('token')) {
