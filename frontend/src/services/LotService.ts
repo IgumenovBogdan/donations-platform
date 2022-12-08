@@ -17,7 +17,7 @@ export default class LotService {
 
     static async getLotsByOrganization(take: number, sortBy?: string, s?: string) {
         return $api.get<lotsResponse>
-        ('/lots?take=' + take + '&order=' + sortBy + '&s=' + s )
+        ('organization/lots?take=' + take + '&order=' + sortBy + '&s=' + s )
     }
 
     static async create(data: {

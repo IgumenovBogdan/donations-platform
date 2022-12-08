@@ -20,7 +20,7 @@ class OrganizationFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->company(),
             'phone' => fake()->phoneNumber(),
             'description' => fake()->text(),
             'user_id' => User::factory()->create()->id

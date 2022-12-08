@@ -21,7 +21,7 @@ class DonateSeeder extends Seeder
         for ($i = 1; $i <= 500; $i++) {
             DB::table('contributor_organization')->insert([
                 'contributor_id' => rand(1, 50),
-                'organization_id' => rand(1, 10),
+                'organization_id' => rand(1, 35),
                 'sent' => rand(1, 20),
                 'payed_at' => Carbon::today()->subDays(rand(0, 600))
             ]);
